@@ -26,3 +26,47 @@
     height: auto;
     object-fit: cover;
 }
+.ButtonInnerContainer{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    input{
+        padding: 15px 10px;
+        width: 200px;
+        border: 1px solid var(--GrayColorInput);
+        font-size: 16px;
+        color: var(--GrenColor);
+        box-sizing: border-box;
+        background-color: inherit;
+        margin: 0px 5px;
+        border: none;
+        border-bottom: 1px solid var(--GrenColor);
+        &:focus{
+            outline: none;
+        }
+    }
+}
+.ButtonInner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button{
+        background-color: var(--GrenColor);
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        margin: 0px 5px;
+        color: #fff;
+        font-size: 16px;
+        &:hover{
+            cursor: pointer;
+            background-color: var(--GrenColorHover);
+        }
+        &:active{
+            background-color: var(--GrenColorActive);
+        }
+    }
+}

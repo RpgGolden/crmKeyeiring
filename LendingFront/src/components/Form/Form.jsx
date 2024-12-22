@@ -41,7 +41,6 @@ function Form(props) {
         console.log("res", res)
       if (res?.status === 200) {        
         props.closeForm();
-        console.log("res", res)
         alert("Заявка успешно отправлена! Ожидайте ответа!")
       }
     })
@@ -180,10 +179,11 @@ function Form(props) {
                 />
               </div>
             </div>
-
-            <button className={styles.submitButton} onClick={() => SubmitForm()}>
-              Отправить
-            </button>
+            <div className={styles.submitButtonContainer}>
+                <button className={styles.submitButton} onClick={() => SubmitForm()}>
+                Отправить
+                </button>
+            </div>
           </div>
         </div>
       </div>

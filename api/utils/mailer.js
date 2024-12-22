@@ -8,14 +8,16 @@ async function sendOrderConfirmationEmail(
     eventType,
     formattedEventStartDate
 ) {
-    try {
+    
+    try { 
+        console.log("process.env.USER", process.env.USER)
         const transporter = nodemailer.createTransport({
             host: 'smtp.yandex.ru',
             port: 587,
             secure: false,
             auth: {
-                user: process.env.USER,
-                pass: process.env.PASS,
+                user: process.env.USER_SMTP,
+                pass: process.env.PASS_SMTP,
             },
         });
 

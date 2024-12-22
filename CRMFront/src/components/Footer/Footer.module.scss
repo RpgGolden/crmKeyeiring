@@ -1,0 +1,14 @@
+@import "../../styles/colors.scss";
+
+.FooterContainer{
+    background-color: var(--GrenColor);
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 16px;
+}
