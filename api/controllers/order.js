@@ -22,7 +22,6 @@ export default {
             if (
                 !numberOfPeople ||
                 !eventType ||
-                !preferences ||
                 !eventStartDate ||
                 !budget ||
                 !deliveryMethod ||
