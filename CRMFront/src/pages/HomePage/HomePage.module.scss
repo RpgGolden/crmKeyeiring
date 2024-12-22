@@ -1,0 +1,28 @@
+.developPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 60px);
+    padding-top: 100px;
+
+    /* Подключаем анимацию */
+    animation: slide-down 1s ease forwards;
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(-100%);
+        opacity: 0; /* Прозрачность в начале */
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1; /* Полная видимость в конце */
+    }
+}
+
+.developPage img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}

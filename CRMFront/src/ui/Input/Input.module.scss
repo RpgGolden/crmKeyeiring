@@ -1,0 +1,49 @@
+@import "../../styles/colors.scss";
+
+.inputCont{
+    display: block;
+    @media (max-width: 768px) {
+      display: flex;
+      justify-content: center;
+  }
+    p{
+        margin: 0;
+        font-size: 16px;
+        @media (max-width: 768px) {
+          font-size: 14px;
+      }
+    }
+    .input{
+        width: 370px;
+        height: 50px;
+        margin-bottom: 25px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid var(--GrayColorInput);
+        font-size: 16px;
+        color: var(--GrenColor);
+        padding-left: 10px;
+        box-sizing: border-box;
+        background-color: inherit;
+        @media (max-width: 768px) {
+          height: 40px;
+          width: 300px;
+          margin-bottom: 15px;
+      }
+    }
+    .inputWrapper {
+        position: relative; // Для позиционирования иконки
+      }
+      .togglePassword {
+        background-color: inherit;
+        height: 40px;
+        box-sizing: border-box;
+        padding: 8px 10px 5px 10px;
+        position: absolute;
+        right: 2px; // Позиция иконки
+        border-radius: 5px;
+        top: 40%;
+        transform: translateY(-50%);
+        cursor: pointer; // Указатель при наведении
+      }
+}

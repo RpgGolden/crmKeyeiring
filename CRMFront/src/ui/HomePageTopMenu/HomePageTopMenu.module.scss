@@ -1,0 +1,32 @@
+@import '../../styles/colors.scss';
+
+.HomePageTopMenu{
+    background-color: rgb(255, 255, 255);
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border-radius: 5px;
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    ul{
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 20px;
+        box-sizing: border-box;
+        width: 600px;
+        li{
+            padding: 0 20px;
+            padding-bottom: 2px;
+            &:hover{
+                // border-bottom: 1px solid var(--GrenColorHover);
+                color: var(--GrenColor);
+                cursor: pointer;
+            }
+        }
+    }
+}
