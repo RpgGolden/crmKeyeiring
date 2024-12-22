@@ -64,8 +64,9 @@ window.addEventListener("unload", () => {
 //! Запрос на авторизацию
 export const LoginFunc = async (UserData) => {
   try {
+    console.log("UserData", UserData)
     const response = await http.post(`${server}/auth/login`, UserData);
-    const { accessToken, refreshToken, ...user } = response.data.data;
+    const { accessToken, refreshToken, ...user } = response.data;
 
     // Store tokens in sessionStorage
     sessionStorage.setItem("accessToken", accessToken);

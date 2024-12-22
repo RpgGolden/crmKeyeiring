@@ -4,13 +4,14 @@ import InputField from "../../ui/Input/Input";
 import styles from "./AuthModule.module.scss";
 import { useContext, useState } from "react";
 import DataContext from "../../context";
-// import { LoginFunc } from "../../API/ApiRequest";
+import { LoginFunc, emailFunc } from "../../API/ApiReguest";
+// import { emailFunc } from "../../API/ApiRequest";
 
 function AuthModule() {
     const navigate = useNavigate()
     const context = useContext(DataContext);
     const [formData, setFormData] = useState({
-        login: '',
+        email: '',
         password: ''
     });
 
@@ -28,22 +29,20 @@ function AuthModule() {
     };
 
     const handleSubmit = () => {
-        const { login, password} = formData;
-        if (!login || !password) {
+        const { email, password} = formData;
+        if (!email || !password) {
             setError('Пожалуйста, заполните все поля');
             return;
-        }else{
-            navigate("/HomePage")
         }
-
-        // LoginFunc(formData).then((res) => {
-        //     if (res.status === 200) {
-        //         navigate("/helloPage")
-        //     }else{
-        //         setError('Неверный логин или пароль!');
-        //         return;
-        //     }
-        // })
+        LoginFunc(formData).then((res) => {
+            console.log("res", res)
+            if (res?.status === 200) {
+                navigate("/HomePage")
+            }else{
+                setError('Неверный логин или пароль!');
+                return;
+            }
+        })
     };
 
     return ( 
@@ -61,8 +60,8 @@ function AuthModule() {
                    <InputField 
                        typelabel="Email" 
                        type="text" 
-                       name="login" 
-                       value={formData.login} 
+                       name="email" 
+                       value={formData.email} 
                        handleChange={handleChange} 
                    />
                    <InputField 
