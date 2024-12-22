@@ -127,3 +127,25 @@ export const LogOut = async () => {
     }
   }
 };
+
+
+//!
+
+export const GetServices = async () => {
+  try {
+    const response = await http.get(`${server}/service/get/1111`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Такой пользователь уже существует!");
+      return false;
+    }
+  }
+};
+

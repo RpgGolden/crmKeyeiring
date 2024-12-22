@@ -20,6 +20,11 @@ function HomePage() {
         }
     }, []);
 
+    const [clickZacaz, setClickZacaz] = useState(false);
+    const closeForm = () =>{
+        setClickZacaz(false);
+    }
+
     return ( 
        <>
         <Head/>
@@ -27,7 +32,7 @@ function HomePage() {
                     <section className={styles.mainSection}>
                         <h1>Премиальный кейтеринг для вашего события</h1>
                         <p>Сервировка, обслуживание и восхитительная кухня на высшем уровне</p>
-                        <a href="#form"><button className={styles.button}>Заказать</button></a>
+                        <button className={styles.button} onClick={() => setClickZacaz(true)}>Заказать</button>
                     </section>
                 <div className={styles.container}>
                     <section id="about" className={styles.about}>
@@ -185,24 +190,21 @@ function HomePage() {
                             </div>
                         </div>
                     </section>
-                  {/* Контактная информация и форма обратной связи */}
-                <section id="contacts" className={styles.contacts}>
-                    <div className={styles.contactContent} > 
-                        {/* Контакты */}
-                        <div className={styles.contactInfo}>
-                            <h2>Наши контакты</h2>
-                            <p>г. Таганрог, ул. Чехова, д.32, офис 7</p>
-                            <p>8 800 101 8 365</p>
-                            <p>Email: <strong>info@accord365.ru</strong></p>
-                        </div>
-                        {/* Форма обратной связи */}
-                        <Form/>
-                    </div>
-                    </section>
                 </div>
+                {
+                    clickZacaz && <Form closeForm={closeForm}/>
+                }
             </main>
             <footer style={styles.footerCont}>
-                <p>&copy; 2024 Премиальный Кейтеринг. Все права защищены.</p>
+                <div>
+                    <h2>Наши контакты</h2>
+                    <p>г. Таганрог, ул. Чехова, д.32, офис 7</p>
+                    <p>8 800 101 8 365</p>
+                    <p>Email: <strong>info@accord365.ru</strong></p>
+                </div>
+                <div>
+                 <p>&copy; 2024 Премиальный Кейтеринг. Все права защищены.</p>
+                </div>
             </footer>
        </>
      );
