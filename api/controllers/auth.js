@@ -15,7 +15,7 @@ export default {
             const { name, surname, patronymic, email, password } = req.body;
 
             if (!name || !surname || !patronymic || !email || !password) {
-                throw new AppErrorMissing('No name, surname, login or password');
+                throw new AppErrorMissing('No name, surname, email or password');
             }
 
             // Проверяем, существует ли пользователь с таким же логином

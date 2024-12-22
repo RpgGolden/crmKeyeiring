@@ -2,7 +2,6 @@ import { AppErrorAlreadyExists, AppErrorMissing } from '../utils/errors.js';
 import Service from '../models/service.js';
 import 'dotenv/config';
 import path from 'path';
-import fs from 'fs';
 export default {
     async createService(req, res) {
         try {

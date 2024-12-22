@@ -6,6 +6,7 @@ import authRoute from './routes/auth.js';
 import serviceRoute from './routes/service.js';
 import path from 'path';
 import 'dotenv/config';
+import orderRoute from './routes/order.js';
 import { fileURLToPath } from 'url';
 
 const app = express();
@@ -25,12 +26,12 @@ const __dirname = path.dirname(__filename);
 })();
 
 app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(corsMiddleware);
 
 app.use('/auth', authRoute);
 app.use('/service', serviceRoute);
-
+app.use('/order', orderRoute);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.listen(PORT, () => console.log(`Listen on :${PORT}`));

@@ -11,8 +11,8 @@ export default class Order extends Model {
                     allowNull: false,
                     primaryKey: true,
                 },
-               clientId: {
-                    type: DataTypes.UUID,
+                clientId: {
+                    type: DataTypes.INTEGER,
                     allowNull: false,
                     references: {
                         model: 'clients',
@@ -62,7 +62,7 @@ export default class Order extends Model {
                     allowNull: false,
                 },
                 status: {
-                    type: DataTypes.ENUM('pending', 'approved', 'declined', 'completed'),
+                    type: DataTypes.ENUM('pending', 'approved', 'declined', 'completed', 'canceled'),
                     allowNull: false,
                     defaultValue: 'pending',
                 },
