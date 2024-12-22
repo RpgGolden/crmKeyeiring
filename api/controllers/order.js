@@ -19,14 +19,7 @@ export default {
                 deliveryAddress,
             } = req.body;
 
-            if (
-                !numberOfPeople ||
-                !eventType ||
-                !eventStartDate ||
-                !budget ||
-                !deliveryMethod ||
-                !deliveryAddress
-            ) {
+            if (!numberOfPeople || !eventType || !eventStartDate || !budget || !deliveryMethod || !deliveryAddress) {
                 throw new AppErrorMissing('Не все данные заполнены');
             }
 
@@ -60,7 +53,7 @@ export default {
                 clientPhone,
                 numberOfPeople,
                 eventType,
-                preferences,
+                preferences: preferences || '',
                 eventStartDate: formattedEventStartDate,
                 budget,
                 deliveryMethod,
