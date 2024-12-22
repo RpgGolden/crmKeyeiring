@@ -92,7 +92,6 @@ export const Register = async (UserData) => {
     const response = await http.post(`${server}/auth/register`, UserData, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-        "Content-Type": "application/json",
       },
     });
     return response;

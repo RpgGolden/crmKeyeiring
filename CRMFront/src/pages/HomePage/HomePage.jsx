@@ -2,6 +2,7 @@ import { useContext } from "react";
 import DataContext from "../../context";
 import HomePageTopMenu from "../../ui/HomePageTopMenu/HomePageTopMenu";
 import styles from "./HomePage.module.scss";
+import UniversalTable from "../../components/UniversalTable/UniversalTable";
 function HomePage() {
     const context = useContext(DataContext);
     console.log("context", context)
@@ -16,15 +17,17 @@ function HomePage() {
         <main>
           <section className={styles.HomePageTableSectionPc}>
             <div className={styles.HomePageTable}>
-              {/* <UniversalTable
-                tableBody={filterData(context.tableBody)}
-                tableHeader={context.tableHeader}
-              /> */}
               {
-                (context.activeTable === "Staff" || context.activeTable === "Analytics" || context.activeTable === "applications") &&  
+                (context.activeTable === "Staff" || context.activeTable === "Analytics" || context.activeTable === "applications") ?
                 <div className={styles.developPage}>
                     <img src="/img/work.png"/>
                 </div>  
+                :(
+                    <UniversalTable
+                    tableBody={(context.tableBody)}
+                    tableHeader={context.tableHeader}
+                />
+                )
               }
             </div>
           </section>

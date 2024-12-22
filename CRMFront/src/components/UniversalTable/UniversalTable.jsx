@@ -13,7 +13,7 @@ function UniversalTable(props) {
  
   useEffect(() => {
     setTableHeaderData(props?.tableHeader);
-    setTableBodyData(filterBasickData(props?.tableBody, store));
+    setTableBodyData(props?.tableBody);
   }, [props?.tableHeader, props?.tableBody]);
 
 
@@ -54,10 +54,10 @@ function UniversalTable(props) {
               ))}
             </tr>
           ))}
-          {tableBodyData.length === 0 && (
+          {(tableBodyData?.length === 0 || !tableBodyData)&& (
             <tr>
               <td
-                colSpan={tableHeaderData.length}
+                colSpan={tableHeaderData?.length}
                 className={styles.tableNotData}
               >
                 Нет данных
