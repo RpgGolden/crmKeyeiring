@@ -11,7 +11,6 @@ export const CreateOrder = async (Data) => {
       const response = await http.post(`${server}/order/create`, Data);
       return response;
     } catch (error) {
-        console.log("Такой пользователь уже существует!");
         return false;
     }
   };

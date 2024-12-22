@@ -39,11 +39,11 @@ function Form(props) {
     console.log("Form Data:", data);
     CreateOrder(data).then((res) => {
         console.log("res", res)
-    //   if (res?.status === 200) {        
-    //     props.closeForm();
-    //     console.log("res", res)
-    //     alert("Заявка успешно отправлена! Ожидайте ответа!")
-    //   }
+      if (res?.status === 200) {        
+        props.closeForm();
+        console.log("res", res)
+        alert("Заявка успешно отправлена! Ожидайте ответа!")
+      }
     })
   };
 
@@ -58,7 +58,7 @@ function Form(props) {
           >
             <p>X</p>
           </button>
-          <form>
+          <div>
             {/* Двухколоночная структура */}
             <div className={styles.gridContainer}>
               <div>
@@ -184,7 +184,7 @@ function Form(props) {
             <button className={styles.submitButton} onClick={() => SubmitForm()}>
               Отправить
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>
