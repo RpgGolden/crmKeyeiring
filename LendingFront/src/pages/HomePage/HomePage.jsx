@@ -10,10 +10,13 @@ function HomePage() {
     useEffect(() => {
         const slider = sliderRef.current;
 
-        if (slider) {
-            // Дублируем содержимое для создания бесконечного эффекта
+        if (slider && !slider.dataset.cloned) {
+            // Дублируем содержимое только один раз
             const clonedSlides = slider.innerHTML;
             slider.insertAdjacentHTML("beforeend", clonedSlides);
+
+            // Добавляем атрибут, чтобы пометить, что слайды уже дублировались
+            slider.dataset.cloned = "true";
         }
     }, []);
 
@@ -24,7 +27,7 @@ function HomePage() {
                     <section className={styles.mainSection}>
                         <h1>Премиальный кейтеринг для вашего события</h1>
                         <p>Сервировка, обслуживание и восхитительная кухня на высшем уровне</p>
-                        <button className={styles.button}>Заказать</button>
+                        <a href="#form"><button className={styles.button}>Заказать</button></a>
                     </section>
                 <div className={styles.container}>
                     <section id="about" className={styles.about}>
@@ -109,25 +112,49 @@ function HomePage() {
 
 
                     <section id="prices" className={styles.prices}>
-                        <h2>Цены на наши услуги</h2>
+                        <h2>Наши услуги</h2>
                         <div className={styles.cardContainer}>
                             <div className={styles.card}>
                                 <img src="/img/fursh.webp" alt="Фуршет"/>
                                 <h3>Фуршет</h3>
                                 <p>Легкие закуски и напитки</p>
                                 <span>от 2000 ₽/гость</span>
+                                <a href="#form"><button>Заказать</button></a>
                             </div>
                             <div className={styles.card}>
                                 <img src="/img/banket.webp" alt="Банкет"/>
                                 <h3>Банкет</h3>
                                 <p>Полное меню с обслуживанием</p>
                                 <span>от 3500 ₽/гость</span>
+                                <a href="#form"><button>Заказать</button></a>
                             </div>
                             <div className={styles.card}>
                                 <img src="/img/kofe.webp" alt="Кофе-брейк"/>
                                 <h3>Кофе-брейк</h3>
                                 <p>Кофе, чай и свежая выпечка</p>
                                 <span>от 800 ₽/гость</span>
+                                <a href="#form"><button>Заказать</button></a>
+                            </div>
+                            <div className={styles.card}>
+                                <img src="/img/fursh.webp" alt="Фуршет"/>
+                                <h3>Порционное питание</h3>
+                                <p>Порционное питание</p>
+                                <span>от 1300 ₽/гость</span>
+                                <a href="#form"><button>Заказать</button></a>
+                            </div>
+                            <div className={styles.card}>
+                                <img src="/img/banket.webp" alt="Банкет"/>
+                                <h3>Линия раздачи</h3>
+                                <p>Для большого объема посетителей</p>
+                                <span>от 1500 ₽/гость</span>
+                                <a href="#form"><button>Заказать</button></a>
+                            </div>
+                            <div className={styles.card}>
+                                <img src="/img/kofe.webp" alt="Кофе-брейк"/>
+                                <h3>Все включено</h3>
+                                <p>Все блюда включены в цену</p>
+                                <span>от 5000 ₽/гость</span>
+                                <a href="#form"><button>Заказать</button></a>
                             </div>
                         </div>
                     </section>
@@ -154,18 +181,17 @@ function HomePage() {
                                     3
                                 </div>
                                 <h4>ОТКРОЕМСЯ ЗА НОЧЬ</h4>
-                                <p>Гости не испытают неудобств и будут приятно удивлены</p>
+                                <p id="form">Гости не испытают неудобств и будут приятно удивлены</p>
                             </div>
                         </div>
                     </section>
-
                   {/* Контактная информация и форма обратной связи */}
                 <section id="contacts" className={styles.contacts}>
-                    <div className={styles.contactContent}>
+                    <div className={styles.contactContent} > 
                         {/* Контакты */}
                         <div className={styles.contactInfo}>
                             <h2>Наши контакты</h2>
-                            <p>г. Краснодар, ул. Восточно-Кругляковская, д.32, офис 7</p>
+                            <p>г. Таганрог, ул. Чехова, д.32, офис 7</p>
                             <p>8 800 101 8 365</p>
                             <p>Email: <strong>info@accord365.ru</strong></p>
                         </div>

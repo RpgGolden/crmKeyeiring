@@ -10,7 +10,7 @@ function Head() {
                 <li><a href="#advantages">Преимущества</a></li>
                 <li><a href="#gallery">Галерея</a></li>
                 <li><a href="#prices">Цены</a></li>
-                <li><a href="#contacts">Контакты</a></li>
+                <li><a href="#form">Контакты</a></li>
             </ul>
         </nav>
     </header>
