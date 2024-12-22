@@ -2,7 +2,6 @@ import { AppErrorInvalid, AppErrorMissing } from '../utils/errors.js';
 import Order from '../models/order.js';
 import Client from '../models/client.js';
 import OrderDto from '../dtos/order-dto.js';
-import * as nodemailer from 'nodemailer';
 import sendOrderConfirmationEmail from '../utils/mailer.js';
 export default {
     async createOrder(req, res) {
@@ -34,7 +33,7 @@ export default {
 
             const eventStartDateObj = new Date(eventStartDate);
 
-            eventStartDateObj.setHours(eventStartDateObj.getHours() + 3);
+            eventStartDateObj.setHours(eventStartDateObj.getHours() + 6);
 
             const formattedEventStartDate = eventStartDateObj.toISOString().slice(0, -5);
 
@@ -71,15 +70,21 @@ export default {
 
             await order.reload({ include: [Client] });
             const orderDto = new OrderDto(order);
+            const mailData = formattedEventStartDate.replace('T', ' ');
+            const [datePart, time] = mailData.split(' ');
+            const date = datePart.split('-').reverse().join('.');
+            const concateDate = `${date} в ${time}`;
 
-            await sendOrderConfirmationEmail(
-                clientEmail,
-                clientName,
-                clientPhone,
-                numberOfPeople,
-                eventType,
-                formattedEventStartDate
-            );
+            if (process.env.SMTP === 'true') {
+                await sendOrderConfirmationEmail(
+                    clientEmail,
+                    clientName,
+                    clientPhone,
+                    numberOfPeople,
+                    eventType,
+                    concateDate
+                );
+            }
 
             return res.json(orderDto);
         } catch (error) {

@@ -10,17 +10,17 @@ async function sendOrderConfirmationEmail(
 ) {
     try {
         const transporter = nodemailer.createTransport({
-            host: 'smtp.rambler.ru',
-            port: 465,
+            host: 'smtp.yandex.ru',
+            port: 587,
             secure: false,
             auth: {
-                user: 'keyteiring@gmail.com',
-                pass: 'test123DAs',
+                user: process.env.USER,
+                pass: process.env.PASS,
             },
         });
 
         const mailOptions = {
-            from: '"KC" <keyteiring@gmail.com>',
+            from: '"KC" <armperson007@yandex.ru>',
             to: clientEmail,
             subject: 'Ваш заказ создан',
             text: `Ваш заказ создан и обрабатывается.\n\nПараметры заказа:\n- Имя клиента: ${clientName}\n- Телефон: ${clientPhone}\n- Количество людей: ${numberOfPeople}\n- Тип мероприятия: ${eventType}\n- Дата начала: ${formattedEventStartDate}\n\nС вами свяжется специалист в течение некоторого времени.`,
