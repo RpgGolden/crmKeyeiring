@@ -67,16 +67,15 @@ export default {
             const date = datePart.split('-').reverse().join('.');
             const concateDate = `${date} в ${time}`;
 
-            // if (process.env.SMTP === 'true') {
-            //     await sendOrderConfirmationEmail(
-            //         clientEmail,
-            //         clientName,
-            //         clientPhone,
-            //         numberOfPeople,
-            //         eventType,
-            //         concateDate
-            //     );
-            // }
+            await sendOrderConfirmationEmail(
+                clientEmail,
+                clientName,
+                clientPhone,
+                numberOfPeople,
+                eventType,
+                concateDate
+            );
+            
 
             return res.json(orderDto);
         } catch (error) {

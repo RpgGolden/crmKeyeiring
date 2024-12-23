@@ -64,14 +64,17 @@ window.addEventListener("unload", () => {
 //! Запрос на авторизацию
 export const LoginFunc = async (UserData) => {
   try {
+    console.log("UserData", UserData)
     const response = await http.post(`${server}/auth/login`, UserData);
-    const { accessToken, refreshToken, ...user } = response.data.data;
+    const { accessToken, refreshToken, ...user } = response.data;
 
     // Store tokens in sessionStorage
     sessionStorage.setItem("accessToken", accessToken);
     sessionStorage.setItem("refreshToken", refreshToken);
     sessionStorage.setItem("userData", JSON.stringify(user));
-
+    console.log("accessToken", accessToken)
+    console.log("refreshToken", refreshToken)
+    console.log("user", user)
     // Set the refresh token as a cookie
     document.Сookie = `refreshToken=${refreshToken}; path=/; secure; SameSite=Strict`; // Adjust attributes as needed
 
@@ -91,7 +94,7 @@ export const Register = async (UserData) => {
   try {
     const response = await http.post(`${server}/auth/register`, UserData, {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
       },
     });
     return response;
@@ -112,7 +115,7 @@ export const LogOut = async () => {
       {},
       {
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+          Authorization: `${sessionStorage.getItem("accessToken")}`,
         },
         withCredentials: true,
       },
@@ -123,6 +126,46 @@ export const LogOut = async () => {
       window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
     } else {
       console.log("Возникла ошибка при выходе!");
+    }
+  }
+};
+
+
+//!
+
+export const GetServices = async () => {
+  try {
+    const response = await http.get(`${server}/service/get/1111`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Такой пользователь уже существует!");
+      return false;
+    }
+  }
+};
+
+export const GetOrders = async () => {
+  console.log("sessionStorage.getItem('accessToken')", sessionStorage.getItem('accessToken'))
+  try {
+    const response = await http.get(`${server}/order/get`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Такой пользователь уже существует!");
+      return false;
     }
   }
 };
