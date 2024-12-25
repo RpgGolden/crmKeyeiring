@@ -14,6 +14,7 @@ export default class OrderDto {
     deliveryMethod;
     deliveryAddress;
     status;
+    createdAt;
 
     constructor(model) {
         this.id = model.id;
@@ -26,5 +27,6 @@ export default class OrderDto {
         this.deliveryMethod = model.deliveryMethod;
         this.deliveryAddress = model.deliveryAddress;
         this.status = model.status;
+        this.createdAt = model.createdAt;
     }
 }
