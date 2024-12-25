@@ -210,9 +210,6 @@ export default {
     async getMany(req, res) {
         try {
             const orders = await Order.findAll({
-                where: {
-                    status: { [Op.ne]: 'canceled' },
-                },
                 include: [Client],
                 order: [
                     ['status', 'DESC'],
