@@ -3,6 +3,7 @@ import Order from '../models/order.js';
 import Client from '../models/client.js';
 import OrderDto from '../dtos/order-dto.js';
 import sendOrderConfirmationEmail from '../utils/mailer.js';
+import { Op } from 'sequelize';
 export default {
     async createOrder(req, res) {
         try {
@@ -75,7 +76,6 @@ export default {
                 eventType,
                 concateDate
             );
-            
 
             return res.json(orderDto);
         } catch (error) {
@@ -209,12 +209,21 @@ export default {
 
     async getMany(req, res) {
         try {
-            const orders = await Order.findAll({ include: [Client] });
+            const orders = await Order.findAll({
+                where: {
+                    status: { [Op.ne]: 'canceled' },
+                },
+                include: [Client],
+                order: [
+                    ['status', 'ASC'],
+                    ['createdAt', 'ASC'],
+                ],
+            });
             const ordersDto = orders.map(order => new OrderDto(order));
             return res.json(ordersDto);
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ error: 'Internal Server Error' });
+            return res.status(500).json({ error: 'Internal Server Error', message: error.message });
         }
     },
 };
