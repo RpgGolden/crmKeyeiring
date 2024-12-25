@@ -9,7 +9,7 @@ import { tableHeadAppoint } from "./components/UniversalTable/HeaderTable";
 import { funFixDataTable } from "./function";
 
 function App() {
-  const [unauthorized, setUnauthorized] = useState(false);
+  const [unauthorized, setUnauthorized] = useState(true);
   const [selectedRows, setSelectedRows] = useState(null);
   const [activeTable, setActiveTable] = useState("applications");
   const [dataTable, setDataTable] = useState([]);

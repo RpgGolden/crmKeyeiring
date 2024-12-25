@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./UniversalTable.module.scss";
 import DataContext from "../../context";
+import { UpdateStatus } from "../../API/ApiReguest";
 
 
 
@@ -8,7 +9,7 @@ function UniversalTable(props) {
   const context = useContext(DataContext);
   const [tableHeaderData, setTableHeaderData] = useState([]);
   const [tableBodyData, setTableBodyData] = useState([]);
-
+  const [clickIdStatus, setClickIdStatus] = useState(null);
   useEffect(() => {
     console.log("context?.searchTableText", context?.searchTableText)
   }, [context?.searchTableText]);
@@ -21,25 +22,58 @@ function UniversalTable(props) {
 
   const getColorStatus = (value) => {
     switch (value) {
-      case "В работе":
-        return "#C5E384"
-      case "Создан":
-        return "#d69a81"
-      case "Одобрен":
-        return "#d6e384"
-      case "Отклонен":
-        return "#d69a81"
-      case "Выполнен":
-        return "#d6e384"
-      default:
-        return "inherit"
+      case "Отменен": // Красный для отмены
+        return "#F28B82"; // Мягкий красный
+      case "Создан": // Нейтральный, теплый оттенок
+        return "#FFD57E"; // Песочный желто-оранжевый
+      case "Одобрен": // Зеленый для подтверждения
+        return "#81C995"; // Мягкий зеленый
+      case "Отклонен": // Темно-красный для отказа
+        return "#F47373"; // Немного темнее "Отменен"
+      case "Выполнен": // Голубой для завершенного
+        return "#A7C7E7"; // Нежный голубой
+      default: // Нейтральный цвет
+        return "inherit";
     }
+  };
+  
+
+  const status = {
+    pending: "Создан",
+    approved: "Одобрен",
+    declined: "Отклонен",
+    completed: "Выполнен",
+    canceled: "Отменен",
+  };
+  const  clickStatusEl = (value) => {
+    const data = {
+      id: clickIdStatus,
+      status: value
+    }
+    UpdateStatus(data).then(res => {
+      if (res?.status === 200) {
+        context?.getTableData(context?.activeTable)
+      }
+    })
+    setClickIdStatus(null)
   }
 
-  const getValue = (value, key, rowIndex) => {
+  const getValue = (value, key, rowIndex, rowId) => {
     switch (key) {
       case "status":
-        return <div className={styles.status} style={{backgroundColor: getColorStatus(value)}} >{value || "___"}</div>
+        return <div className={styles.CheckListContainer}>
+                <div className={styles.status} style={{backgroundColor: getColorStatus(value)}} onClick={() => setClickIdStatus(rowId)}>{value || "___"}</div>
+                {
+                  clickIdStatus === rowId &&
+                   <ul className={styles.statusList}>
+                     <li onClick={() => clickStatusEl('pending')}>Создан</li>
+                     <li onClick={() => clickStatusEl('approved')}>Одобрен</li>
+                     <li onClick={() => clickStatusEl('declined')}>Отклонен</li>
+                     <li onClick={() => clickStatusEl('completed')}>Выполнен</li>
+                     <li onClick={() => clickStatusEl('canceled')}>Отменен</li>
+                   </ul>
+                }
+              </div>
       case "number":
         return rowIndex + 1 || "___";     
       default:
@@ -80,7 +114,7 @@ function UniversalTable(props) {
                   name={header.key}
                   className={header.key}
                 >
-                {getValue(row[header.key], header.key, rowIndex)}
+                {getValue(row[header.key], header.key, rowIndex, row.id)}
                 </td>
               ))}
             </tr>

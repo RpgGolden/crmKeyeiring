@@ -1,14 +1,64 @@
 @import "../../styles/colors.scss";
 
-.FooterContainer{
+.FooterContainer {
     background-color: var(--GrenColor);
-    height: 60px;
-    position: absolute;
-    bottom: 0;
+    color: #fff;
+    padding: 5px 0;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 14px;
+    border-top: 2px solid #ffffff22;
+    position: absolute;
+    bottom: 0;
+}
+
+.ContentWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.LogoSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.Logo {
+    width: 50px;
+    margin-bottom: 8px;
+}
+
+.ContactSection {
+    text-align: center;
+}
+
+.LinksSection {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.Link {
     color: #fff;
-    font-size: 16px;
+    text-decoration: none;
+    margin-bottom: 5px;
+    transition: opacity 0.3s;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.CopyrightSection {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    opacity: 0.8;
 }

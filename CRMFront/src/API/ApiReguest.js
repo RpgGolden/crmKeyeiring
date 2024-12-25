@@ -112,7 +112,9 @@ export const LogOut = async () => {
   try {
     const response = await http.post(
       `${server}/auth/logout`,
-      {},
+      {
+        refreshToken: sessionStorage.getItem("refreshToken"),
+      },
       {
         headers: {
           Authorization: `${sessionStorage.getItem("accessToken")}`,
@@ -152,7 +154,6 @@ export const GetServices = async () => {
 };
 
 export const GetOrders = async () => {
-  console.log("sessionStorage.getItem('accessToken')", sessionStorage.getItem('accessToken'))
   try {
     const response = await http.get(`${server}/order/get`, {
       headers: {
@@ -167,5 +168,18 @@ export const GetOrders = async () => {
       console.log("Такой пользователь уже существует!");
       return false;
     }
+  }
+};
+
+export const UpdateStatus = async (data) => {
+  try {
+    const response = await http.post(`${server}/order/changeStatus`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Такой пользователь уже существует!");
   }
 };

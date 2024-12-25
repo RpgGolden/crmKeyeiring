@@ -90,3 +90,25 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #aaa; /* Цвет ползунка при наведении */
 }
+.CheckListContainer{
+  position: relative;
+  .statusList{
+    position: absolute;
+    left: -100px;
+    top: 0px;
+    width: 100px;
+    z-index: 10;
+    height: 160px;
+    background-color: #fff;
+    border-radius: 8px;
+    text-align: start;
+    list-style: none;
+    li{
+      padding: 5px 10px;
+      &:hover{
+        cursor: pointer;
+        background-color: var(--TableColorMouse);
+      }
+    }
+  }
+}
