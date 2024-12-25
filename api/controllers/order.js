@@ -46,7 +46,7 @@ export default {
                 });
                 clientId = client.id;
             }
-            const currentDate = new Date()
+            const currentDate = new Date();
             const dateWithAddedHours = new Date(currentDate.getTime() + 3 * 60 * 60 * 1000);
 
             const order = await Order.create({
@@ -223,7 +223,6 @@ export default {
 
             // Удаляем временную зону из eventStartDate
             const ordersWithoutTimeZone = ordersDto.map(order => {
-
                 return {
                     ...order,
                     eventStartDate: removeTimeZone(order.eventStartDate),
@@ -251,7 +250,8 @@ export default {
             const ordersWithoutTimeZone = ordersDto.map(order => {
                 return {
                     ...order,
-                    eventStartDate: order.eventStartDate.replace(':000Z', ''),
+                    eventStartDate: removeTimeZone(order.eventStartDate),
+                    createdAt: removeTimeZone(order.createdAt),
                 };
             });
             return res.json(ordersWithoutTimeZone);
@@ -260,5 +260,4 @@ export default {
             return res.status(500).json({ error: 'Internal Server Error', message: error.message });
         }
     },
-
 };
