@@ -23,4 +23,8 @@ router
 router
     .route('/get')
     .get(authenticateToken, checkRole([roles.ADMINISTRATOR, roles.COOK]), asyncRoute(orderController.getMany));
+
+router
+    .route('/getCanceled')
+    .get(authenticateToken, checkRole([roles.ADMINISTRATOR]), asyncRoute(orderController.getAllCanceled));
 export default router;

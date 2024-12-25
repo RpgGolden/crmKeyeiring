@@ -210,14 +210,27 @@ export default {
     async getMany(req, res) {
         try {
             const orders = await Order.findAll({
-                where: {
-                    status: { [Op.ne]: 'canceled' },
-                },
                 include: [Client],
                 order: [
-                    ['status', 'ASC'],
-                    ['createdAt', 'ASC'],
+                    ['status', 'DESC'],
+                    ['createdAt', 'DESC'],
                 ],
+            });
+            const ordersDto = orders.map(order => new OrderDto(order));
+            return res.json(ordersDto);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+        }
+    },
+
+    async getAllCanceled(req, res) {
+        try {
+            const orders = await Order.findAll({
+                where: {
+                    status: 'canceled',
+                },
+                include: [Client],
             });
             const ordersDto = orders.map(order => new OrderDto(order));
             return res.json(ordersDto);
