@@ -16,8 +16,22 @@ router
         upload.single('image'),
         asyncRoute(serviceController.createService)
     );
+
 router.route('/get/:name').get(asyncRoute(serviceController.getService));
+
 router
     .route('/disable/:name')
     .post(authenticateToken, checkRole([roles.ADMINISTRATOR]), asyncRoute(serviceController.disableService));
+
+router
+    .route('/update/:name')
+    .patch(
+        authenticateToken,
+        checkRole([roles.ADMINISTRATOR]),
+        upload.single('image'),
+        asyncRoute(serviceController.updateService)
+    );
+
+router.route('/getAll').get(asyncRoute(serviceController.getAllServices));
+
 export default router;
