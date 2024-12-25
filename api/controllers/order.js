@@ -233,7 +233,16 @@ export default {
                 include: [Client],
             });
             const ordersDto = orders.map(order => new OrderDto(order));
-            return res.json(ordersDto);
+
+            // Удаляем временную зону из eventStartDate
+            const ordersWithoutTimeZone = ordersDto.map(order => {
+                return {
+                    ...order,
+                    eventStartDate: order.eventStartDate.replace(':000Z', ''), // Убираем '000Z'
+                };
+            });
+
+            return res.json(ordersWithoutTimeZone);
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: 'Internal Server Error', message: error.message });
