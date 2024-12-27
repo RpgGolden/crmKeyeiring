@@ -2,10 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import Head from "../../components/Header/Head";
 import styles from "./HomePage.module.scss";
 import Form from "../../components/Form/Form";
+import { GetAllService } from "../../API/ApiRequest";
+import ServiseCard from "../../components/ServiseCard/ServiseCard";
 
 function HomePage() {
 
     const sliderRef = useRef(null);
+    const [service, setService] = useState([]);
 
     useEffect(() => {
         const slider = sliderRef.current;
@@ -18,6 +21,13 @@ function HomePage() {
             // Добавляем атрибут, чтобы пометить, что слайды уже дублировались
             slider.dataset.cloned = "true";
         }
+
+        GetAllService().then((resp)=>{
+            if(resp?.status === 200){
+                console.log("resp", resp.data)
+                setService(resp.data)
+            }
+        })
     }, []);
 
     const [clickZacaz, setClickZacaz] = useState(false);
@@ -119,48 +129,11 @@ function HomePage() {
                     <section id="prices" className={styles.prices}>
                         <h2>Наши услуги</h2>
                         <div className={styles.cardContainer}>
-                            <div className={styles.card}>
-                                <img src="/img/fursh.webp" alt="Фуршет"/>
-                                <h3>Фуршет</h3>
-                                <p>Легкие закуски и напитки</p>
-                                <span>от 2000 ₽/гость</span>
-                               <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
-                            <div className={styles.card}>
-                                <img src="/img/banket.webp" alt="Банкет"/>
-                                <h3>Банкет</h3>
-                                <p>Полное меню с обслуживанием</p>
-                                <span>от 3500 ₽/гость</span>
-                                <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
-                            <div className={styles.card}>
-                                <img src="/img/kofe.webp" alt="Кофе-брейк"/>
-                                <h3>Кофе-брейк</h3>
-                                <p>Кофе, чай и свежая выпечка</p>
-                                <span>от 800 ₽/гость</span>
-                                <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
-                            <div className={styles.card}>
-                                <img src="/img/fursh.webp" alt="Фуршет"/>
-                                <h3>Порционное питание</h3>
-                                <p>Порционное питание</p>
-                                <span>от 1300 ₽/гость</span>
-                                <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
-                            <div className={styles.card}>
-                                <img src="/img/banket.webp" alt="Банкет"/>
-                                <h3>Линия раздачи</h3>
-                                <p>Для большого объема посетителей</p>
-                                <span>от 1500 ₽/гость</span>
-                                <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
-                            <div className={styles.card}>
-                                <img src="/img/kofe.webp" alt="Кофе-брейк"/>
-                                <h3>Все включено</h3>
-                                <p>Все блюда включены в цену</p>
-                                <span>от 5000 ₽/гость</span>
-                                <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
+                        {service.length === 0 ? <p>Услуги не найдены</p> :
+                            (
+                                service?.map((item, index) => <ServiseCard key={index} item={item} setClickZacaz={setClickZacaz}/>) 
+                            )
+                        }
                         </div>
                     </section>
                     

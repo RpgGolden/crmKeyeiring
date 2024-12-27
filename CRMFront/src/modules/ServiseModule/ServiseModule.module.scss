@@ -1,0 +1,30 @@
+.ServiseModule{
+    margin-top: 100px;
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+    width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
+    .createServise{
+        height: 390px;
+        width: 300px;
+        // box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        border: 1px solid var(--GrenColor);
+        border-radius: 8px;
+        font-size: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+        cursor: pointer;
+        transition: 0.1s linear all;
+        &:hover{
+            background-color: var(--GrenColor);
+            color: #fff;
+        }
+        &:active{
+            background-color: var(--GrenColorActive);
+        }
+    }
+}

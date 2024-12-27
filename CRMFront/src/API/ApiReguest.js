@@ -183,3 +183,33 @@ export const UpdateStatus = async (data) => {
       console.log("Такой пользователь уже существует!");
   }
 };
+
+
+export const GetAllService = async () => {
+  try {
+    const response = await http.get(`${server}/service/getAll`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Такой пользователь уже существует!");
+  }
+};
+
+export const CreateService = async (data) => {
+  try {
+    const response = await http.post(`${server}/service/create`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Такой пользователь уже существует!");
+  }
+};
+
+
+

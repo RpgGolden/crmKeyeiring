@@ -14,3 +14,13 @@ export const CreateOrder = async (Data) => {
         return false;
     }
   };
+
+  export const GetAllService = async () => {
+    try {
+      const response = await http.get(`${server}/service/getAll`);
+      return response;
+    } catch (error) {
+        console.log("Такой пользователь уже существует!");
+    }
+  };
+  
