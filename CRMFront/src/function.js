@@ -36,6 +36,7 @@ export function funFixDataTable(data) {
             eventType: item.eventType || "___",
             preferences: item.preferences || "___",
             eventStartDate: getNormalDate(item.eventStartDate) || "___",
+            createdAt: getNormalDate(item.createdAt) || "___",
             budget: item.budget || "___",
             deliveryMethod: deliveryMethod[item.deliveryMethod] || "___",
             deliveryAddress: item.deliveryAddress || "___",

@@ -3,6 +3,7 @@ export const tableHeadAppoint = [
     { key: "clientName", value: "Имя клиента", isActive: true  },
     { key: "clientEmail", value: "Почта клиента", isActive: true  },
     { key: "clientPhone", value: "Номер телефона клиента", isActive: true  },
+    { key: "createdAt", value: "Дата создания заявки", isActive: true  },
     { key: "eventType", value: "Тип мероприятия", isActive: true  },
     { key: "preferences", value: "Предпочтения", isActive: true  },
     { key: "eventStartDate", value: "Дата мероприятия", isActive: true  },
