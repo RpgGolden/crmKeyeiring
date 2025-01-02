@@ -9,7 +9,6 @@ export default {
         try {
             const { name, description, price } = req.body;
             const image = req.file ? path.posix.join('uploads', req.file.filename) : null;
-            console.log(image);
             if (!name || !description || !price) {
                 throw new AppErrorMissing('Не все данные заполнены');
             }
