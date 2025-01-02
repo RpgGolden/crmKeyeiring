@@ -1,9 +1,9 @@
-import { AppErrorInvalid, AppErrorMissing } from '../utils/errors.js';
+import { AppErrorMissing } from '../utils/errors.js';
 import Order from '../models/order.js';
 import Client from '../models/client.js';
 import OrderDto from '../dtos/order-dto.js';
 import sendOrderConfirmationEmail from '../utils/mailer.js';
-import { Op } from 'sequelize';
+import removeTimeZone from '../utils/removetimezone.js';
 export default {
     async createOrder(req, res) {
         try {
@@ -46,6 +46,8 @@ export default {
                 });
                 clientId = client.id;
             }
+            const currentDate = new Date();
+            const dateWithAddedHours = new Date(currentDate.getTime() + 3 * 60 * 60 * 1000);
 
             const order = await Order.create({
                 clientId,
@@ -59,6 +61,7 @@ export default {
                 budget,
                 deliveryMethod,
                 deliveryAddress,
+                createdAt: dateWithAddedHours,
             });
 
             await order.reload({ include: [Client] });
@@ -217,7 +220,16 @@ export default {
                 ],
             });
             const ordersDto = orders.map(order => new OrderDto(order));
-            return res.json(ordersDto);
+
+            // Удаляем временную зону из eventStartDate
+            const ordersWithoutTimeZone = ordersDto.map(order => {
+                return {
+                    ...order,
+                    eventStartDate: removeTimeZone(order.eventStartDate),
+                    createdAt: removeTimeZone(order.createdAt),
+                };
+            });
+            return res.json(ordersWithoutTimeZone);
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: 'Internal Server Error', message: error.message });
@@ -238,10 +250,10 @@ export default {
             const ordersWithoutTimeZone = ordersDto.map(order => {
                 return {
                     ...order,
-                    eventStartDate: order.eventStartDate.replace(':000Z', ''), // Убираем '000Z'
+                    eventStartDate: removeTimeZone(order.eventStartDate),
+                    createdAt: removeTimeZone(order.createdAt),
                 };
             });
-
             return res.json(ordersWithoutTimeZone);
         } catch (error) {
             console.error(error);
