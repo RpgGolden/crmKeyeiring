@@ -33,5 +33,11 @@ router
     );
 
 router.route('/getAll').get(asyncRoute(serviceController.getAllServices));
-
+router
+    .route('/delete/:name')
+    .delete(
+        authenticateToken,
+        checkRole([roles.ADMINISTRATOR]),
+        asyncRoute(serviceController.deleteService)
+    );
 export default router;

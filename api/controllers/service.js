@@ -9,7 +9,6 @@ export default {
         try {
             const { name, description, price } = req.body;
             const image = req.file ? path.posix.join('uploads', req.file.filename) : null;
-            console.log(image);
             if (!name || !description || !price) {
                 throw new AppErrorMissing('Не все данные заполнены');
             }
@@ -93,8 +92,8 @@ export default {
         try {
             const services = await Service.findAll({
                 where: {
-                    isActive: true
-                }
+                    isActive: true,
+                },
             });
 
             const servicesWithImageUrls = services.map(service => ({
@@ -103,7 +102,7 @@ export default {
                 description: service.description,
                 price: service.price,
                 imageUrl: service.image ? `${process.env.HOST}/${service.image}` : null,
-                isActive: service.isActive
+                isActive: service.isActive,
             }));
 
             res.json(servicesWithImageUrls);
@@ -125,6 +124,23 @@ export default {
             await service.save();
 
             res.json({ message: 'Услуга успешно отключена' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    },
+
+    async deleteService(req, res) {
+        try {
+            const service = await Service.findOne({ where: { name: req.params.name } });
+
+            if (!service) {
+                return res.status(404).json({ error: 'Услуга не найдена' });
+            }
+
+            await service.destroy({ force: true });
+
+            res.json({ message: 'Услуга успешно удалена' });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Internal Server Error' });
