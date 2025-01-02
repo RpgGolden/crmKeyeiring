@@ -10,7 +10,7 @@ router.route('/create').post(asyncRoute(orderController.createOrder));
 
 router
     .route('/changeStatus')
-    .post(authenticateToken, checkRole([roles.ADMINISTRATOR]), asyncRoute(orderController.changeStatus));
+    .post(authenticateToken, checkRole([roles.ADMINISTRATOR, roles.COOK]), asyncRoute(orderController.changeStatus));
 
 router
     .route('/update/:id')

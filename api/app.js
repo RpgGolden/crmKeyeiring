@@ -7,6 +7,7 @@ import serviceRoute from './routes/service.js';
 import path from 'path';
 import 'dotenv/config';
 import orderRoute from './routes/order.js';
+import clientRoute from './routes/client.js';
 import { fileURLToPath } from 'url';
 
 const app = express();
@@ -33,5 +34,6 @@ app.use(corsMiddleware);
 app.use('/auth', authRoute);
 app.use('/service', serviceRoute);
 app.use('/order', orderRoute);
+app.use('/client', clientRoute);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.listen(PORT, () => console.log(`Listen on :${PORT}`));
