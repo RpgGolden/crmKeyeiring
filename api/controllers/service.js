@@ -93,7 +93,10 @@ export default {
             const services = await Service.findAll({
                 where: {
                     isActive: true,
-                },
+                }, order: [
+                    ['createdAt', 'DESC'],
+                    ['status', 'DESC'],
+                ],
             });
 
             const servicesWithImageUrls = services.map(service => ({
