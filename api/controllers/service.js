@@ -91,9 +91,7 @@ export default {
     async getAllServices(req, res) {
         try {
             const services = await Service.findAll({
-                where: {
-                    isActive: true,
-                }, order: [
+                order: [
                     ['createdAt', 'DESC'],
                     ['status', 'DESC'],
                 ],
