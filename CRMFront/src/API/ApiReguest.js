@@ -211,5 +211,18 @@ export const CreateService = async (data) => {
   }
 };
 
+export const DeleteService = async (idService) => {
+  try {
+    const response = await http.delete(`${server}/service/delete/${idService}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Такой пользователь уже существует!");
+  }
+};
+
 
 

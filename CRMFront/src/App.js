@@ -16,7 +16,7 @@ function App() {
   const [filteredDataTable, setFilteredDataTable] = useState([]); // Для хранения отфильтрованных данных
   const [tableHeader, setTableHeader] = useState([]);
   const [searchTableText, setSearchTableText] = useState("");
-
+  const [vizibleePopUp, setVizibleePopUp] = useState("");
   // Получение данных для таблицы
   const getTableData = (value) => {
     switch (value) {
@@ -69,6 +69,8 @@ function App() {
     setTableHeader,
     searchTableText,
     setSearchTableText,
+    vizibleePopUp,
+    setVizibleePopUp
   };
 
   return (
