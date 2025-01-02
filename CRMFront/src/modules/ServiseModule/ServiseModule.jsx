@@ -6,6 +6,7 @@ import { CreateService, GetAllService } from "../../API/ApiReguest";
 import DataContext from "../../context";
 import { useContext } from "react";
 import PopUpCreateService from "../../components/PopUp/PopUpCreateService/PopUpCreateService";
+import PopUpEditService from "../../components/PopUp/PopUpEditService/PopUpEditService";
 
 function ServiseModule() {
     const [service, setService] = useState([]);
@@ -39,6 +40,9 @@ function ServiseModule() {
                 </div>
                 {
                     context.vizibleePopUp === "createService" &&  <PopUpCreateService GetAllService={GetAllServiceFunc}/>
+                }
+                {
+                    context.vizibleePopUp === "PopUpEditService" &&  <PopUpEditService GetAllService={GetAllServiceFunc}/>
                 }
             </div>
         </div>

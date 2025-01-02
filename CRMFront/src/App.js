@@ -17,6 +17,7 @@ function App() {
   const [tableHeader, setTableHeader] = useState([]);
   const [searchTableText, setSearchTableText] = useState("");
   const [vizibleePopUp, setVizibleePopUp] = useState("");
+  const [selectedService, setSelectedService] = useState(null);
   // Получение данных для таблицы
   const getTableData = (value) => {
     switch (value) {
@@ -70,7 +71,9 @@ function App() {
     searchTableText,
     setSearchTableText,
     vizibleePopUp,
-    setVizibleePopUp
+    setVizibleePopUp,
+    setSelectedService,
+    selectedService,
   };
 
   return (

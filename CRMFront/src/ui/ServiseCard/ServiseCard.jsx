@@ -1,10 +1,12 @@
 import { useState } from "react";
 import styles from "./ServiseCard.module.scss";
 import { DeleteService } from "../../API/ApiReguest";
+import DataContext from "../../context";
+import { useContext } from "react";
 
 function ServiseCard(props) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-
+  const context = useContext(DataContext);
   // Функция для отображения подтверждения удаления
   const handleDeleteClick = () => {
     setShowDeleteConfirmation(true);
@@ -18,7 +20,7 @@ function ServiseCard(props) {
   // Функция для подтверждения удаления
   const confirmDelete = () => {
     setShowDeleteConfirmation(false);
-    DeleteService(props.item.id).then((res) => {
+    DeleteService(props.item.name).then((res) => {
         if(res?.status === 200){
             props.GetAllService()
         }
@@ -35,7 +37,7 @@ function ServiseCard(props) {
           </div>
           <div>
             <button>
-              <img src="/img/edit.svg" alt="edit" />
+              <img onClick={() => {context.setVizibleePopUp("PopUpEditService"); context.setSelectedService(props?.item?.name)}} src="/img/edit.svg" alt="edit" />
             </button>
             <button onClick={handleDeleteClick}>
               <img src="/img/delete.svg" alt="delete" />

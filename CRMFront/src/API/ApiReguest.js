@@ -224,5 +224,32 @@ export const DeleteService = async (idService) => {
   }
 };
 
+export const GetOneService = async (idService) => {
+  try {
+    const response = await http.get(`${server}/service/get/${idService}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Такой пользователь уже существует!");
+  }
+};
+
+export const UpdateService = async (data, nameService) => { 
+  console.log("nameService", nameService)
+  console.log("data", data)
+  try {
+    const response = await http.patch(`${server}/service/update/${nameService}`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Такой пользователь уже существует!");
+  }
+}
 
 
