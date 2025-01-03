@@ -77,7 +77,7 @@ export default {
                 return res.status(400).json({ error: 'ID клиента не указан' });
             }
             const orders = await Order.findAll({ where: { clientId: id }, order: [['createdAt', 'DESC']] });
-
+            const getCountOrders = orders.length;
             // Убираем таймзону из дат
             const ordersWithoutTimezone = orders.map(order => ({
                 ...order.toJSON(), // Преобразуем экземпляр модели в обычный объект
@@ -85,7 +85,10 @@ export default {
                 createdAt: removeTimeZone(order.createdAt),
             }));
 
-            return res.json(ordersWithoutTimezone);
+            return res.json({
+                orders: ordersWithoutTimezone,
+                count: getCountOrders,
+            });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: 'Internal Server Error' });
