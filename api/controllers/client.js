@@ -41,9 +41,19 @@ export default {
                     eventStartDate: removeTimeZone(order.eventStartDate),
                     createdAt: removeTimeZone(order.createdAt),
                 }));
-                clientDto.count = clientDto.orders.length
+                clientDto.count = clientDto.orders.length;
+
+                // Сортируем заказы по createdAt в порядке убывания и берем первый
+                if (clientDto.orders.length > 0) {
+                    clientDto.orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    clientDto.lastOrderDate = clientDto.orders[0].createdAt;
+                } else {
+                    clientDto.lastOrderDate = undefined; // или другая логика, если заказов нет
+                }
+
                 return clientDto;
             });
+
             return res.json(clientsDto);
         } catch (error) {
             console.error(error);
