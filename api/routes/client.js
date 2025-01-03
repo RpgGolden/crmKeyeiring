@@ -9,18 +9,18 @@ const router = Router();
 
 router
     .route('/getOne/:id')
-    .get(authenticateToken, checkRole([role.ADMINISTRATOR]), asyncRoute(clientController.getClient));
+    .get(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.getClient));
 
 router
     .route('/getAll')
-    .get(authenticateToken, checkRole([role.ADMINISTRATOR]), asyncRoute(clientController.getAllClients));
+    .get(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.getAllClients));
 
 router
     .route('/:id')
-    .delete(authenticateToken, checkRole([role.ADMINISTRATOR]), asyncRoute(clientController.deleteClient));
+    .delete(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.deleteClient));
 
 router
     .route('/getClientOrders/:id')
-    .get(authenticateToken, checkRole([role.ADMINISTRATOR]), asyncRoute(clientController.getClientOrders));
+    .get(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.getClientOrders));
 
 export default router;
