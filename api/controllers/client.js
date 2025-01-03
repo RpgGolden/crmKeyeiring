@@ -35,7 +35,6 @@ export default {
             const clientsDto = clients.map(client => {
                 const clientDto = new ClientDto(client);
 
-                // Удаляем временную зону из дат в заказах
                 clientDto.orders = clientDto.orders.map(order => ({
                     ...order,
                     eventStartDate: removeTimeZone(order.eventStartDate),
@@ -43,12 +42,11 @@ export default {
                 }));
                 clientDto.count = clientDto.orders.length;
 
-                // Сортируем заказы по createdAt в порядке убывания и берем первый
                 if (clientDto.orders.length > 0) {
                     clientDto.orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                     clientDto.lastOrderDate = clientDto.orders[0].createdAt;
                 } else {
-                    clientDto.lastOrderDate = undefined; // или другая логика, если заказов нет
+                    clientDto.lastOrderDate = undefined;
                 }
 
                 return clientDto;
