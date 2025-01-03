@@ -3,14 +3,14 @@
   overflow-y: scroll; /* Скроллинг останется функциональным */
   border-radius: 8px;
   margin: 0 auto;
-
+  min-width: 100%;
   table {
     width: 100%;
     border-collapse: collapse; /* Убирает отступы между ячейками */
     min-height: auto;
     border-radius: 8px;
-    min-height: 305px;
-
+    min-height: 205px;  
+    overflow-x: scroll;
     thead {
       position: sticky;
       top: 0;

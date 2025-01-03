@@ -10,7 +10,6 @@ function HomePageTopMenu() {
         context.setActiveTable(value)
         context.getTableData(value)
     }
-    console.log("sessionS", JSON.parse(sessionStorage.getItem("userData")).name)
     const [contaainerVizible, setcontaainerVizible] = useState(false)
 
     const getRole = (value) =>{
@@ -36,8 +35,9 @@ function HomePageTopMenu() {
             </div>
             <ul>
                 <li onClick={() => clickLi("applications")} style={{borderBottom: context?.activeTable === "applications" &&  "1px solid #007AA1" }}>Мои Заявки</li>
-                <li onClick={() => clickLi("Staff")} style={{borderBottom: context?.activeTable === "Staff" &&  "1px solid #007AA1" }}>Сотрудники</li>
                 <li onClick={() => clickLi("Services")} style={{borderBottom: context?.activeTable === "Services" &&  "1px solid #007AA1" }}>Услуги</li>
+                <li onClick={() => clickLi("Clients")} style={{borderBottom: context?.activeTable === "Clients" &&  "1px solid #007AA1" }}>Клиенты</li>
+                <li onClick={() => clickLi("Staff")} style={{borderBottom: context?.activeTable === "Staff" &&  "1px solid #007AA1" }}>Сотрудники</li>
                 <li onClick={() => clickLi("Analytics")} style={{borderBottom: context?.activeTable === "Analytics" && "1px solid #007AA1" }}>Аналитика</li>
             </ul>
             <div className={styles.User}>

@@ -13,3 +13,13 @@ export const tableHeadAppoint = [
     { key: "status", value: "Статус", isActive: true  },
 ]
 
+
+export const tableHeadClient = [
+    { key: "number", value: "Номер клиента", isActive: true  },
+    { key: "clientName", value: "Имя клиента", isActive: true  },
+    { key: "clientEmail", value: "Почта клиента", isActive: true  },
+    { key: "clientPhone", value: "Номер телефона клиента", isActive: true  },
+    { key: "count", value: "Колличество заказов", isActive: true  },  
+    { key: "lastOrderDate", value: "Дата последнего заказа", isActive: true  },
+]
+

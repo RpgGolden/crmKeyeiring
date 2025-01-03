@@ -58,6 +58,17 @@ function UniversalTable(props) {
     setClickIdStatus(null)
   }
 
+  const getNormalDate = (date) => {
+    if (date) {
+      const dateObj = new Date(date);
+      const day = String(dateObj.getDate()).padStart(2, "0");
+      const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const year = dateObj.getFullYear();
+      return `${day}.${month}.${year}`;
+    }
+    return "___";
+}
+
   const getValue = (value, key, rowIndex, rowId) => {
     switch (key) {
       case "status":
@@ -76,6 +87,8 @@ function UniversalTable(props) {
               </div>
       case "number":
         return rowIndex + 1 || "___";     
+      case "lastOrderDate":
+        return getNormalDate(value)
       default:
         return value || "___";
     }

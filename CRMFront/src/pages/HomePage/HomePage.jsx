@@ -13,30 +13,30 @@ function HomePage() {
   const context = useContext(DataContext);
   const [filterStatus, setFilterStatus] = useState("all"); // Состояние фильтра
 
-     // Функция фильтрации данных в зависимости от выбранного фильтра
-     const filteredData = context.dataTable?.filter((item) => {
-      switch (filterStatus) {
-        case "all":
-          return true; // Показать все записи
-        case "active":
-          return (
-            item.status !== "Отклонен" &&
-            item.status !== "Выполнен" &&
-            item.status !== "Отменен"
-          ); // Актуальные
-        case "canceled":
-          return item.status != "Создан" && item.status != "Одобрен"; // Отмененные
-        default:
-          return true;
-      }
-    });   
+  // Функция фильтрации данных в зависимости от выбранного фильтра
+  const filteredData = context.dataTable?.filter((item) => {
+  switch (filterStatus) {
+      case "all":
+        return true; // Показать все записи
+      case "active":
+        return (
+          item.status !== "Отклонен" &&
+          item.status !== "Выполнен" &&
+          item.status !== "Отменен"
+        ); // Актуальные
+      case "canceled":
+        return item.status != "Создан" && item.status != "Одобрен"; // Отмененные
+      default:
+        return true;
+    }
+  });   
 
   return (
     <div className={styles.HomePageContainer}>
       <header>
         <div className={styles.HomePageHeaderPc}>
           <HomePageTopMenu />
-        </div>
+        </div> 
       </header>
       <Layout>
         {context.activeTable === "applications" && (
@@ -51,8 +51,14 @@ function HomePage() {
                 ) : context.activeTable === "applications" ?(
                   <UniversalTable
                   tableBody={filteredData} // Передаем отфильтрованные данные
-                  tableHeader={context.tableHeader}
-                />
+                  tableHeader={context?.tableHeader}
+                />) : context.activeTable === "Clients" ?(
+                  <div className={styles.ClientsTable}>
+                    <UniversalTable
+                    tableBody={context?.dataTable}
+                    tableHeader={context?.tableHeader}
+                    />
+                  </div>
                 ):(
                   <div className={styles.developPage}>
                     <img src="/img/work.png" />

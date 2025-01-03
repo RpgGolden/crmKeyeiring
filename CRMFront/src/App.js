@@ -4,8 +4,8 @@ import HomePage from "./pages/HomePage/HomePage";
 import DataContext from "./context";
 import Authorization from "./pages/Auth/Authorization";
 import "./styles/app.css";
-import { GetOrders } from "./API/ApiReguest";
-import { tableHeadAppoint } from "./components/UniversalTable/HeaderTable";
+import { GetOrders, getAllClients } from "./API/ApiReguest";
+import { tableHeadAppoint, tableHeadClient } from "./components/UniversalTable/HeaderTable";
 import { funFixDataTable } from "./function";
 
 function App() {
@@ -20,6 +20,7 @@ function App() {
   const [selectedService, setSelectedService] = useState(null);
   // Получение данных для таблицы
   const getTableData = (value) => {
+    console.log("я вызываюсь Value", value)
     switch (value) {
       case "applications":
         GetOrders().then((res) => {
@@ -36,6 +37,15 @@ function App() {
       case "Services":
         break;
       case "Analytics":
+        break;
+      case "Clients":
+        getAllClients().then((res) => {
+          if (res?.status === 200) {
+            setDataTable(res?.data);
+            setFilteredDataTable(res?.data); // Изначально отфильтрованные данные равны всем данным
+            setTableHeader(tableHeadClient);
+          }
+        })
         break;
       default:
         break;

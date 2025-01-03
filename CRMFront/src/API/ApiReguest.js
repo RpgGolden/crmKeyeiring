@@ -252,4 +252,16 @@ export const UpdateService = async (data, nameService) => {
   }
 }
 
+export const getAllClients = async () => {
+  try {
+    const response = await http.get(`${server}/client/getAll`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Такой пользователь уже существует!");
+  }
+}
 
