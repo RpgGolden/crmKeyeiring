@@ -41,7 +41,7 @@ export default {
                     eventStartDate: removeTimeZone(order.eventStartDate),
                     createdAt: removeTimeZone(order.createdAt),
                 }));
-
+                clientDto.count = clientDto.orders.length
                 return clientDto;
             });
             return res.json(clientsDto);
