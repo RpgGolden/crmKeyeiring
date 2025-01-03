@@ -12,7 +12,7 @@ router
     .route('/create')
     .post(
         authenticateToken,
-        checkRole([roles.ADMINISTRATOR]),
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK])),
         upload.single('image'),
         asyncRoute(serviceController.createService)
     );
@@ -21,13 +21,17 @@ router.route('/get/:name').get(asyncRoute(serviceController.getService));
 
 router
     .route('/disable/:name')
-    .post(authenticateToken, checkRole([roles.ADMINISTRATOR]), asyncRoute(serviceController.disableService));
+    .post(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK])),
+        asyncRoute(serviceController.disableService)
+    );
 
 router
     .route('/update/:name')
     .patch(
         authenticateToken,
-        checkRole([roles.ADMINISTRATOR]),
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK])),
         upload.single('image'),
         asyncRoute(serviceController.updateService)
     );
@@ -37,7 +41,7 @@ router
     .route('/delete/:name')
     .delete(
         authenticateToken,
-        checkRole([roles.ADMINISTRATOR]),
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK])),
         asyncRoute(serviceController.deleteService)
     );
 export default router;

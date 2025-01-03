@@ -93,7 +93,7 @@ export default {
             const services = await Service.findAll({
                 order: [
                     ['createdAt', 'DESC'],
-                    ['status', 'DESC'],
+                    ['isActive', 'DESC'],
                 ],
             });
 

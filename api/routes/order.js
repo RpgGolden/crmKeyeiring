@@ -10,21 +10,37 @@ router.route('/create').post(asyncRoute(orderController.createOrder));
 
 router
     .route('/changeStatus')
-    .post(authenticateToken, checkRole([roles.ADMINISTRATOR, roles.COOK]), asyncRoute(orderController.changeStatus));
+    .post(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK])),
+        asyncRoute(orderController.changeStatus)
+    );
 
 router
     .route('/update/:id')
-    .patch(authenticateToken, checkRole([roles.ADMINISTRATOR]), asyncRoute(orderController.updateOrder));
+    .patch(authenticateToken, asyncRoute(checkRole([roles.ADMINISTRATOR])), asyncRoute(orderController.updateOrder));
 
 router
     .route('/get/:id')
-    .get(authenticateToken, checkRole([roles.ADMINISTRATOR, roles.COOK]), asyncRoute(orderController.getOne));
+    .get(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK])),
+        asyncRoute(orderController.getOne)
+    );
 
 router
     .route('/get')
-    .get(authenticateToken, checkRole([roles.ADMINISTRATOR, roles.COOK]), asyncRoute(orderController.getMany));
+    .get(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK])),
+        asyncRoute(orderController.getMany)
+    );
 
 router
     .route('/getCanceled')
-    .get(authenticateToken, checkRole([roles.ADMINISTRATOR]), asyncRoute(orderController.getAllCanceled));
+    .get(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK])),
+        asyncRoute(orderController.getAllCanceled)
+    );
 export default router;
