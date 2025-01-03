@@ -44,4 +44,21 @@ router
         asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK])),
         asyncRoute(serviceController.deleteService)
     );
+
+router
+    .route('/changeRole/:id')
+    .patch(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR])),
+        upload.single('image'),
+        asyncRoute(serviceController.switchUserRole)
+    );
+router
+    .route('/getAllRoles')
+    .get(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR])),
+        upload.single('image'),
+        asyncRoute(serviceController.getAllRoles)
+    );
 export default router;

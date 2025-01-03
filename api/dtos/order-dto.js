@@ -1,4 +1,4 @@
-import ClientDto from './auth-dto copy.js';
+import ClientDto from './clientDtoNew.js';
 
 export default class OrderDto {
     id;
