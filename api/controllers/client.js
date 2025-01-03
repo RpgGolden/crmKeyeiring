@@ -76,7 +76,7 @@ export default {
             if (!id) {
                 return res.status(400).json({ error: 'ID клиента не указан' });
             }
-            const orders = await Order.findAll({ where: { clientId: id } });
+            const orders = await Order.findAll({ where: { clientId: id }, order: [['createdAt', 'DESC']] });
 
             // Убираем таймзону из дат
             const ordersWithoutTimezone = orders.map(order => ({
