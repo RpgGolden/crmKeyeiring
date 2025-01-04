@@ -3,6 +3,9 @@ import Service from '../models/service.js';
 import 'dotenv/config';
 import path from 'path';
 import { Op } from 'sequelize';
+import User from '../models/user.js';
+import roles from '../config/roles.js';
+import UserDto from '../dtos/user-dto.js';
 
 export default {
     async createService(req, res) {
@@ -145,6 +148,40 @@ export default {
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Internal Server Error' });
+        }
+    },
+
+    async getAllRoles(req, res) {
+        try {
+            res.json(roles);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    },
+    async switchUserRole(req, res) {
+        try {
+            const { id } = req.params;
+            const { newRole } = req.body;
+
+            // Проверяем, что новая роль является допустимой
+            if (![roles.ADMINISTRATOR, roles.COOK].includes(newRole)) {
+                return res.status(400).json({ error: 'Invalid role provided' });
+            }
+
+            const user = await User.findByPk(id);
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+
+            user.role = newRole;
+            await user.save();
+            const updateUserDto = new UserDto(user);
+
+            return res.status(200).json({ message: 'Роль пользователя обновлена', user: updateUserDto });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
 };
