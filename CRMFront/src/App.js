@@ -7,6 +7,7 @@ import "./styles/app.css";
 import { GetOrders, getAllClients } from "./API/ApiReguest";
 import { tableHeadAppoint, tableHeadClient } from "./components/UniversalTable/HeaderTable";
 import { funFixDataTable } from "./function";
+import InfoClient from "./pages/InfoClient/InfoClient";
 
 function App() {
   const [unauthorized, setUnauthorized] = useState(true);
@@ -18,6 +19,7 @@ function App() {
   const [searchTableText, setSearchTableText] = useState("");
   const [vizibleePopUp, setVizibleePopUp] = useState("");
   const [selectedService, setSelectedService] = useState(null);
+  const [textPopUp, setTextPopUp] = useState("");
   // Получение данных для таблицы
   const getTableData = (value) => {
     console.log("я вызываюсь Value", value)
@@ -84,6 +86,8 @@ function App() {
     setVizibleePopUp,
     setSelectedService,
     selectedService,
+    textPopUp,
+    setTextPopUp
   };
 
   return (
@@ -93,6 +97,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Authorization />} />
             <Route path="/HomePage" element={<HomePage />} />
+            <Route path="/InfoClient" element={<InfoClient />} />
           </Routes>
         </main>
       </BrowserRouter>

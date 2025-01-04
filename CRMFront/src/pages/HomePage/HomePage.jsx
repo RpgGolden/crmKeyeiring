@@ -8,6 +8,8 @@ import Footer from "../../components/Footer/Footer";
 import { generateAndDownloadExcel } from "../../function";
 import ServiseModule from "../../modules/ServiseModule/ServiseModule";
 import TableTopAplication from "../../components/TableTopAplication/TableTopAplication";
+import PopUpEditAplication from "../../components/PopUp/PopUpEditAplication/PopUpEditAplication";
+import PopUpError from "../../components/PopUp/PopUpError/PopUpError";
 
 function HomePage() {
   const context = useContext(DataContext);
@@ -52,11 +54,13 @@ function HomePage() {
                   <UniversalTable
                   tableBody={filteredData} // Передаем отфильтрованные данные
                   tableHeader={context?.tableHeader}
+                  clicker={true}
                 />) : context.activeTable === "Clients" ?(
                   <div className={styles.ClientsTable}>
                     <UniversalTable
                     tableBody={context?.dataTable}
                     tableHeader={context?.tableHeader}
+                    clicker={false}
                     />
                   </div>
                 ):(
@@ -70,6 +74,10 @@ function HomePage() {
         </main>
       </Layout>
       <Footer />
+      {context.vizibleePopUp == "PopUpEditAplication" && <PopUpEditAplication/>}
+      {context.vizibleePopUp == "PopUpError" && <PopUpError/>}
+
+      
     </div>
   );
 }

@@ -102,7 +102,7 @@ export const Register = async (UserData) => {
     if (error?.response?.status === 403) {
       window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
     } else {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
       return false;
     }
   }
@@ -147,7 +147,7 @@ export const GetServices = async () => {
     if (error?.response?.status === 403) {
       window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
     } else {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
       return false;
     }
   }
@@ -165,11 +165,49 @@ export const GetOrders = async () => {
     if (error?.response?.status === 403) {
       window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
     } else {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
       return false;
     }
   }
 };
+
+export const GetOneOrders = async (id) => {
+  try {
+    const response = await http.get(`${server}/order/get/${id}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Произошла ошибка при выполнении запроса!");
+      return false;
+    }
+  }
+};
+
+export const UpdateOrders = async (id, data) => {
+  try {
+    const response = await http.patch(`${server}/order/update/${id}`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Произошла ошибка при выполнении запроса!");
+      return false;
+    }
+  }
+};
+
+
 
 export const UpdateStatus = async (data) => {
   try {
@@ -180,9 +218,11 @@ export const UpdateStatus = async (data) => {
     });
     return response;
   } catch (error) {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
   }
 };
+
+
 
 
 export const GetAllService = async () => {
@@ -194,7 +234,7 @@ export const GetAllService = async () => {
     });
     return response;
   } catch (error) {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
   }
 };
 
@@ -207,7 +247,7 @@ export const CreateService = async (data) => {
     });
     return response;
   } catch (error) {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
   }
 };
 
@@ -220,7 +260,7 @@ export const DeleteService = async (idService) => {
     });
     return response;
   } catch (error) {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
   }
 };
 
@@ -233,7 +273,7 @@ export const GetOneService = async (idService) => {
     });
     return response;
   } catch (error) {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
   }
 };
 
@@ -248,7 +288,7 @@ export const UpdateService = async (data, nameService) => {
     });
     return response;
   } catch (error) {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
   }
 }
 
@@ -261,7 +301,33 @@ export const getAllClients = async () => {
     });
     return response;
   } catch (error) {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+}
+
+export const getOneClient = async (id) => {
+  try {
+    const response = await http.get(`${server}/client/getOne/${id}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+}
+
+export const getOrdersClient = async (id) => {
+  try {
+    const response = await http.get(`${server}/client/getClientOrders/${id}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
   }
 }
 

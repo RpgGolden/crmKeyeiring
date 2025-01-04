@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styles from "./HomePageTopMenu.module.scss";
 import DataContext from "../../context";
 import { LogOut } from "../../API/ApiReguest";
@@ -28,6 +28,20 @@ function HomePageTopMenu() {
       })
     }
 
+    const refUserMenu = useRef(null);
+    const handleClickOutside = (event) => {
+      if (refUserMenu.current && !refUserMenu.current.contains(event.target)) {
+        setcontaainerVizible(false);
+      }
+    };
+    
+    useEffect(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+
     return ( 
         <div className={styles.HomePageTopMenu}>
             <div className={styles.Logo}>
@@ -43,7 +57,7 @@ function HomePageTopMenu() {
             <div className={styles.User}>
               <p className={styles.userName} onClick={() => setcontaainerVizible(!contaainerVizible)}>{JSON.parse(sessionStorage.getItem("userData"))?.surname} {JSON.parse(sessionStorage.getItem("userData"))?.name}</p>
               { contaainerVizible &&
-                <div className={styles.userDataContainer}>
+                <div className={styles.userDataContainer} ref={refUserMenu}>
                     <p>Роль: {getRole(JSON.parse(sessionStorage.getItem("userData"))?.role)}</p>
                     <div className={styles.exit}>
                         <button onClick={() => LogFunc()}>Выход</button>

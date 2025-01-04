@@ -1,0 +1,97 @@
+.reviewsSection {
+    padding: 40px 20px;
+    text-align: center;
+}
+h2{
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.reviewsSlider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    width: 80%; /* Можно подогнать по ширине контейнера */
+    margin: 0 auto;
+}
+
+.review {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Плавный переход */
+    width: 100%;
+}
+
+.reviewItem {
+    display: flex;
+    min-width: 100%; /* Чтобы каждый элемент занимал весь доступный контейнер */
+    box-sizing: border-box;
+}
+
+.reviewImage {
+    width: 400px; /* Фиксированная ширина */
+    height: 250px; /* Высота, которая будет сохраняться для всех картинок */
+    object-fit: cover;
+    padding-left: 50px;
+    pointer-events: none;
+}
+
+.reviewContent {
+    width: 1100px; /* Фиксированная ширина */
+    padding: 20px;
+    text-align: left;
+    box-sizing: border-box;
+    position: relative;
+}
+
+
+.reviewText {
+    font-size: 1.2em;
+    color: #333;
+    line-height: 1.6;
+    width: 600px;
+}
+
+.reviewAuthor {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #555;
+    position: absolute;
+    bottom: 0;
+    right: 100px;
+}
+
+.arrow {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.arrow:hover {
+    color: var(--Orange); /* Цвет при наведении */
+}
+
+.arrow:first-child {
+    left: 0px;
+    position: absolute;
+    z-index: 100;
+}
+
+.arrow:last-child {
+    right: 0px;
+}
+
+.reviewsSlider button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}

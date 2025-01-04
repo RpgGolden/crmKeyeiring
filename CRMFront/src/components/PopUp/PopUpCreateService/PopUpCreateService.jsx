@@ -6,6 +6,7 @@ import { CreateService } from "../../../API/ApiReguest";
 
 function PopUpCreateService(props) {
     const context = useContext(DataContext);
+    const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -19,22 +20,30 @@ function PopUpCreateService(props) {
   };
 
   const handleFileChange = (e) => {
-    setFormData({ ...formData, image: e.target.files[0] });
+    const file = e.target.files[0];
+    if (file) {
+        setFormData({ ...formData, image: file });
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.description || !formData.price || !formData.image) {
+    if (!formData?.name || !formData?.description || !formData?.price || !formData?.image) {
       alert("Пожалуйста, заполните все поля");
       return;
     }
   
     // Создаем объект FormData
     const form = new FormData();
-    form.append("name", formData.name);
-    form.append("description", formData.description);
-    form.append("price", formData.price);
-    form.append("image", formData.image); // Здесь важно добавить объект File
+    form.append("name", formData?.name);
+    form.append("description", formData?.description);
+    form.append("price", formData?.price);
+    form.append("image", formData?.image); // Здесь важно добавить объект File
   
     // Отправляем данные
     CreateService(form).then((resp) => {
@@ -64,7 +73,7 @@ function PopUpCreateService(props) {
               type="text"
               name="name"
               className={styles.popup__input}
-              value={formData.name}
+              value={formData?.name}
               onChange={handleChange}
               required
             />
@@ -74,7 +83,7 @@ function PopUpCreateService(props) {
             <textarea
               name="description"
               className={styles.popup__textarea}
-              value={formData.description}
+              value={formData?.description}
               onChange={handleChange}
               required
             />
@@ -85,7 +94,7 @@ function PopUpCreateService(props) {
               type="number"
               name="price"
               className={styles.popup__input}
-              value={formData.price}
+              value={formData?.price}
               onChange={handleChange}
               required
             />
@@ -101,8 +110,9 @@ function PopUpCreateService(props) {
                 required
               />
               <span className={styles.popup__file__custom}>
-                {formData.image ? formData.image.name : "Загрузить фото"}
+                {formData?.image ? formData?.image?.name : "Загрузить фото"}
               </span>
+              {imagePreview && <img src={imagePreview} alt="Превью" className={styles.imagePreview} />}
             </div>
           </label>
           <button type="submit" className={styles.popup__submit}>

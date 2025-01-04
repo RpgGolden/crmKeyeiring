@@ -1,0 +1,159 @@
+@import "./../../styles/colors.scss";
+
+.reviewForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+label {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.inputField {
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.inputField:focus {
+    border-color: var(--Orange);
+    outline: none;
+}
+
+.textareaField {
+    resize: none!important;
+    min-height: 150px;
+   
+}
+
+.fileInput {
+    margin-top: 10px;
+}
+
+.imagePreview {
+    margin-top: 10px;
+    max-width: 200px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.submitButton {
+    padding: 12px 24px;
+    background-color: var(--Orange);
+    color: #fff;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.submitButton:hover {
+    background-color: var(--OrangeHover);
+    transform: translateY(-2px);
+}
+
+.submitButton:active {
+    transform: translateY(0);
+}
+
+/* Стиль для заголовка */
+.Title {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+    .reviewForm {
+        padding: 15px;
+    }
+
+    .inputField {
+        font-size: 0.9em;
+    }
+
+    .submitButton {
+        font-size: 1em;
+    }
+
+    .imagePreview {
+        max-width: 100%;
+    }
+}
+
+.hiddenInput {
+    display: none; // Скрыть стандартное поле выбора файла
+}
+
+.customFileInput {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.fileButton {
+    padding: 10px 20px;
+    background-color: var(--Orange);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.fileButton:hover {
+    background-color: var(--OrangeHover);
+    transform: translateY(-2px);
+}
+
+.fileButton:active {
+    transform: translateY(0);
+}
+
+.fileName {
+    font-size: 1em;
+    color: #555;
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 200px; // Ограничение на длину текста
+}
+
+.imagePreview {
+    margin-top: 10px;
+    max-width: 200px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+}

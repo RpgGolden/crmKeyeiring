@@ -11,6 +11,7 @@
     border-radius: 8px;
     min-height: 205px;  
     overflow-x: scroll;
+    font-size: 16px;
     thead {
       position: sticky;
       top: 0;
@@ -64,13 +65,52 @@
   .status {
     padding: 5px 10px;
     border-radius: 8px;
+    transition: 0.08s linear all;
+    &:hover{
+      opacity: 0.6;
+    }
   }
   .setectedTr td {
     background-color: var(--TableSelectedTr) !important;
   }
+  .infoContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    a{
+      text-decoration: none;
+    }
+  }
+  .info{
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: var(--GrenColor);
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    width: 150px;
+    transition: 0.1s all linear;
+    &:hover{
+      background-color: var(--GrenColorHover);
+    }
+    &:active{
+      background-color: var(--GrenColorActive);
+    }
+  }
 }
-.tableNotData{
+.tableNotData {
   height: 65vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: var(--GrayColorInput);
+  width: 1436px;
+  position: absolute;
+  pointer-events: none;  
 }
 
 /* Стили для скроллбара */

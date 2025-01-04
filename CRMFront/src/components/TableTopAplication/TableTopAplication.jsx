@@ -20,6 +20,15 @@ function TableTopAplication(props) {
       setDropdownOpen(false); // Закрываем выпадающий список
     };
 
+    const vizibleEditPopUp = () =>{
+      if(context.selectedRows === null){
+        context.setVizibleePopUp("PopUpError")
+        context.setTextPopUp("Сначала Выберите заявку!")
+      }else{
+        context.setVizibleePopUp("PopUpEditAplication")
+      }
+    }
+
     return ( 
           <div className={styles.ButtonInnerContainer}>
             <div className={styles.FilterContainer}>
@@ -67,8 +76,7 @@ function TableTopAplication(props) {
               </div>
             </div>
             <div className={styles.ButtonInner}>
-              <button>Редактировать</button>
-              <button>Удалить</button>
+              <button onClick={() => vizibleEditPopUp()}>Редактировать</button>
               <button
                 onClick={() =>
                   generateAndDownloadExcel(props.filteredData, "Заявки")

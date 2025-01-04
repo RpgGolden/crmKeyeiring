@@ -1,0 +1,99 @@
+.InfoClientContainer {
+    padding: 20px;
+    background-color: var(--ExampleColor);
+    font-family: Arial, sans-serif;
+    color: var(--GrayColor);
+}
+.ContainerBack{
+    button{
+        background-color: var(--GrenColor);
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        margin: 0px 5px;
+        color: #fff;
+        font-size: 16px;
+        margin-bottom: 20px;
+        &:hover{
+            cursor: pointer;
+            background-color: var(--GrenColorHover);
+        }
+        &:active{
+            background-color: var(--GrenColorActive);
+        }
+    }
+}
+.clientInfo {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.clientInfo h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: var(--GrenColor);
+}
+
+.clientInfo p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.ordersHistory {
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.ordersHistory h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: var(--GrenColor);
+}
+
+.ordersHistory table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ordersHistory th, .ordersHistory td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.ordersHistory th {
+    background-color: var(--GrenColor);
+    color: white;
+    font-weight: bold;
+}
+
+.ordersHistory tr:nth-child(even) {
+    background-color: var(--TableColorMouse);
+}
+
+.ordersHistory tr:hover {
+    background-color: var(--TableSelectedTr);
+}
+
+.ordersHistory tr td.status {
+    text-transform: capitalize;
+    font-weight: bold;
+    text-align: center;
+}
+
+.ordersHistory tr td.status.approved {
+    color: var(--GrenColor);
+}
+
+.ordersHistory tr td.status.cancelled {
+    color: var(--RedColor);
+}
+
+.ordersHistory tr td.status.pending {
+    color: var(--GrayColorInput);
+}

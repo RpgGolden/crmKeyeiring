@@ -4,30 +4,56 @@ import styles from "./HomePage.module.scss";
 import Form from "../../components/Form/Form";
 import { GetAllService } from "../../API/ApiRequest";
 import ServiseCard from "../../components/ServiseCard/ServiseCard";
+import ReviewForm from "../../components/ReviewForm/ReviewForm";
+import ReviewsSlider from "../../components/ReviewsSlider/ReviewsSlider";
 
 function HomePage() {
 
     const sliderRef = useRef(null);
     const [service, setService] = useState([]);
+    const [currentSlide, setCurrentSlide] = useState(0);
+
+    const reviews = [
+        {
+            img: "/img/1.jpg",
+            text: "Отличный кейтеринг! Все гости были в восторге от блюд и сервировки. Спасибо за профессионализм!",
+            author: "Анна Петрова"
+        },
+        {
+            img: "/img/5.jpg",
+            text: "Все было на высшем уровне! Обслуживание, еда и организация просто великолепны.",
+            author: "Иван Смирнов"
+        },
+        {
+            img: "/img/3.webp",
+            text: "Я искренне рекомендую эту компанию! Наше мероприятие стало незабываемым.",
+            author: "Екатерина Иванова"
+        }
+    ];
+
+    const handlePrev = () => {
+        setCurrentSlide((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
+    };
+
+    const handleNext = () => {
+        setCurrentSlide((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
+    };
 
     useEffect(() => {
         const slider = sliderRef.current;
 
         if (slider && !slider.dataset.cloned) {
-            // Дублируем содержимое только один раз
             const clonedSlides = slider.innerHTML;
             slider.insertAdjacentHTML("beforeend", clonedSlides);
-
-            // Добавляем атрибут, чтобы пометить, что слайды уже дублировались
             slider.dataset.cloned = "true";
         }
 
-        GetAllService().then((resp)=>{
-            if(resp?.status === 200){
-                console.log("resp", resp.data)
-                setService(resp.data)
+        GetAllService().then((resp) => {
+            if (resp?.status === 200) {
+                console.log("resp", resp.data);
+                setService(resp.data);
             }
-        })
+        });
     }, []);
 
     const [clickZacaz, setClickZacaz] = useState(false);
@@ -46,7 +72,7 @@ function HomePage() {
                     </section>
                 <div className={styles.container}>
                     <section id="about" className={styles.about}>
-                        <h2>О нас</h2>
+                        <h2 className={styles.Title}>О нас</h2>
                         <div className={styles.aboutContent}>
                             <div className={styles.aboutText}>
                                 <p>Мы создаем уникальные гастрономические впечатления для ваших событий: от камерных встреч до масштабных праздников.</p>
@@ -61,7 +87,7 @@ function HomePage() {
 
 
                     <section id="advantages" className={styles.advantages}>
-                        <h2>Наши преимущества</h2>
+                        <h2 className={styles.Title}>Наши преимущества</h2>
                         <div className={styles.advantagesGrid}>
                             <div className={styles.advantageCard}>
                                 <img src="/img/menu.jpg" alt="Изысканное меню" />
@@ -111,7 +137,7 @@ function HomePage() {
                     <div className={styles.container}>
                     {/* Галерея */}
                     <section id="gallery" className={styles.gallery}>
-                        <h2>Галерея</h2>
+                        <h2 className={styles.Title}>Галерея</h2>
                         <div className={styles.gallerySlider}>
                             <div ref={sliderRef} className={styles.sliderTrack}>
                                 <img src="/img/s1.jpg" alt="Сервировка" />
@@ -127,7 +153,7 @@ function HomePage() {
 
 
                     <section id="prices" className={styles.prices}>
-                        <h2>Наши услуги</h2>
+                        <h2 className={styles.Title}>Наши услуги</h2>
                         <div className={styles.cardContainer}>
                         {service.length === 0 ? <p>Услуги не найдены</p> :
                             (
@@ -136,9 +162,12 @@ function HomePage() {
                         }
                         </div>
                     </section>
+
+                     {/* Слайдер отзывов */}
+                    <ReviewsSlider reviews={reviews}/>
                     
                     <section id="howItWorks" className={styles.howItWorks}>
-                        <h2>Как это работает</h2>
+                        <h2 className={styles.Title}>Как это работает</h2>
                         <div className={styles.steps}>
                             <div className={styles.step}>
                                 <div className={styles.circle}>
@@ -162,6 +191,11 @@ function HomePage() {
                                 <p id="form">Гости не испытают неудобств и будут приятно удивлены</p>
                             </div>
                         </div>
+                    </section>
+
+                    <section>
+                    <h2 className={styles.Title}>Оставьте отзыв</h2>
+                        <ReviewForm/>
                     </section>
                 </div>
                 {

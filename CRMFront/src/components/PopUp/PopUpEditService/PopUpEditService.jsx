@@ -18,21 +18,21 @@ function PopUpEditService(props) {
 
   // Загружаем данные услуги при открытии попапа
   useEffect(() => {
-    if (context.selectedService) {
+    if (context?.selectedService) {
       setIsLoading(true);
-      GetOneService(context.selectedService).then((resp) => {
+      GetOneService(context?.selectedService).then((resp) => {
         if (resp?.status === 200) {
           setFormData({
-            newName: resp.data.name,
-            description: resp.data.description,
-            price: resp.data.price,
+            newName: resp?.data?.name,
+            description: resp?.data?.description,
+            price: resp?.data?.price,
             image: null, // Оставляем null для нового файла
           });
         }
         setIsLoading(false);
       });
     }
-  }, [context.selectedService]); // Выполняется при изменении выбранной услуги
+  }, [context?.selectedService]); // Выполняется при изменении выбранной услуги
 
   // Обработчик изменения текстовых полей
   const handleChange = (e) => {
@@ -48,22 +48,22 @@ function PopUpEditService(props) {
   // Обработчик отправки формы
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.newName || !formData.description || !formData.price) {
+    if (!formData?.newName || !formData?.description || !formData?.price) {
       alert("Пожалуйста, заполните все поля");
       return;
     }
 
     const form = new FormData();
-    form.append("newName", formData.newName);
-    form.append("description", formData.description);
-    form.append("price", formData.price);
+    form.append("newName", formData?.newName);
+    form.append("description", formData?.description);
+    form.append("price", formData?.price);
 
     // Если пользователь загрузил новый файл, добавляем его в запрос
-    if (formData.image) {
-      form.append("image", formData.image);
+    if (formData?.image) {
+      form.append("image", formData?.image);
     }
 
-    UpdateService(form, context.selectedService)
+    UpdateService(form, context?.selectedService)
       .then((resp) => {
         if (resp?.status === 200) {
           // После успешного обновления вызываем функцию обновления списка
@@ -100,7 +100,7 @@ function PopUpEditService(props) {
                 type="text"
                 name="newName"
                 className={styles.popup__input}
-                value={formData.newName}
+                value={formData?.newName}
                 onChange={handleChange}
                 
               />
@@ -110,7 +110,7 @@ function PopUpEditService(props) {
               <textarea
                 name="description"
                 className={styles.popup__textarea}
-                value={formData.description}
+                value={formData?.description}
                 onChange={handleChange}
                 
               />
@@ -121,7 +121,7 @@ function PopUpEditService(props) {
                 type="number"
                 name="price"
                 className={styles.popup__input}
-                value={formData.price}
+                value={formData?.price}
                 onChange={handleChange}
                 
               />
@@ -136,8 +136,8 @@ function PopUpEditService(props) {
                   onChange={handleFileChange}
                 />
                 <span className={styles.popup__file__custom}>
-                  {formData.image
-                    ? formData.image.name
+                  {formData?.image
+                    ? formData?.image?.name
                     : "Загрузить новое фото (если нужно)"}
                 </span>
               </div>

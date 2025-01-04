@@ -1,12 +1,7 @@
 @import "./../../../styles/colors.scss";
-
-// Общие стили
-body {
-    font-family: Arial, sans-serif;
-  }
   
   // Задний фон с блюром
-  .popup {
+  .PopUpEditAplication {
     position: fixed;
     top: 0;
     left: 0;
@@ -19,7 +14,7 @@ body {
     align-items: center;
     z-index: 1000;
   
-    &__content {
+    .popup__content {
       background: #fff;
       padding: 20px;
       box-sizing: border-box;
@@ -30,7 +25,7 @@ body {
       position: relative;
     }
   
-    &__close {
+    .popup__close {
       position: absolute;
       top: 10px;
       right: 10px;
@@ -44,26 +39,26 @@ body {
       }
     }
   
-    &__title {
+    .popup__title {
       margin-bottom: 20px;
       font-size: 1.5rem;
       text-align: start;
     }
   
-    &__form {
+    .popup__form {
       display: flex;
       flex-direction: column;
       gap: 15px;
     }
   
-    &__label {
+    .popup__label {
       display: flex;
       flex-direction: column;
       font-size: 0.9rem;
     }
   
-    &__input,
-    &__textarea {
+    .popup__input,
+    .popup__textarea {
       border: 1px solid #ccc;
       border-radius: 4px;
       padding: 8px;
@@ -72,37 +67,13 @@ body {
       box-sizing: border-box;
     }
   
-    &__textarea {
+    .popup__textarea {
       resize: none;
       height: 100px;
     }
   
-    &__file__wrapper {
-      position: relative;
-    }
   
-    &__file__input {
-      opacity: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-    }
-  
-    &__file__custom {
-      display: block;
-      padding: 8px;
-      border: 1px solid var(--GrenColor);
-      border-radius: 4px;
-      background-color: #f9f9f9;
-      cursor: pointer;
-      text-align: center;
-      transition: 0.1s all linear;
-    }
-  
-    &__submit {
+    .popup__submit {
       padding: 10px;
       background: var(--GrenColor);
       color: #fff;
@@ -119,11 +90,6 @@ body {
       &:active {
         background: var(--GrenColorActive);
       }
-    }
-    .imagePreview{
-      margin-top: 10px;
-      width: 100%;
-      max-height: 200px;
     }
   }
   
