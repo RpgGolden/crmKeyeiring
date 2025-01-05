@@ -74,7 +74,6 @@ export default {
             if (!client) {
                 return res.status(400).json({ error: 'Такого клиента не существует' });
             }
-            console.log('client', client);
             await client.destroy({ force: true });
             return res.json({ message: 'Клиент успешно удален' });
         } catch (error) {

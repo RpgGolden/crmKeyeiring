@@ -10,7 +10,6 @@ async function sendOrderConfirmationEmail(
 ) {
     
     try { 
-        console.log("process.env.USER", process.env.USER)
         const transporter = nodemailer.createTransport({
             host: 'smtp.yandex.ru',
             port: 587,
