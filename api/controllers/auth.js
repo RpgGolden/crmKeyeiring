@@ -6,6 +6,7 @@ import { AppErrorAlreadyExists, AppErrorMissing } from '../utils/errors.js';
 import User from '../models/user.js';
 import TokenModel from '../models/token-model.js';
 import jwtUtils from '../utils/jwt.js';
+import UserDto from '../dtos/user-dto.js';
 
 import 'dotenv/config';
 
@@ -106,6 +107,17 @@ export default {
             return res.json({ accessToken, refreshToken: newRefreshToken });
         } catch (error) {
             throw new AppErrorMissing('Invalid refresh token');
+        }
+    },
+
+    async getUsers(req, res) {
+        try {
+            const users = await User.findAll({ attributes: ['id', 'name', 'surname', 'patronymic', 'email'] });
+            const authDtos = users.map(user => new UserDto(user));
+            return res.json(authDtos);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal server error' });
         }
     },
 };
