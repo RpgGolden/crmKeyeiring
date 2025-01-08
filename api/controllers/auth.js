@@ -112,7 +112,10 @@ export default {
 
     async getUsers(req, res) {
         try {
-            const users = await User.findAll({ attributes: ['id', 'name', 'surname', 'patronymic', 'email', 'role', 'createdAt'] });
+            const users = await User.findAll({
+                attributes: ['id', 'name', 'surname', 'patronymic', 'email', 'role', 'createdAt'],
+                order: [['createdAt', 'DESC']],
+            });
             const authDtos = users.map(user => new UserDto(user));
             return res.json(authDtos);
         } catch (error) {
