@@ -63,7 +63,16 @@ function HomePage() {
                     clicker={false}
                     />
                   </div>
-                ):(
+                ) : context.activeTable === "Users" ?(
+                  <div className={styles.ClientsTable}>
+                    <UniversalTable
+                    tableBody={context?.dataTable}
+                    tableHeader={context?.tableHeader}
+                    clicker={false}
+                    />
+                  </div>
+                ):
+                (
                   <div className={styles.developPage}>
                     <img src="/img/work.png" />
                   </div>

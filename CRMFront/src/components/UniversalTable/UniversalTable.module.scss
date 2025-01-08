@@ -9,7 +9,7 @@
     border-collapse: collapse; /* Убирает отступы между ячейками */
     min-height: auto;
     border-radius: 8px;
-    min-height: 205px;  
+    min-height: 100px;  
     overflow-x: scroll;
     font-size: 16px;
     thead {
@@ -150,5 +150,19 @@
         background-color: var(--TableColorMouse);
       }
     }
+  }
+}
+.RoleClicker{
+  padding: 3px 0px;
+  background-color: var(--GrenColor);
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.1s all linear;
+  &:hover{
+    background-color: var(--GrenColorHover);
+  }
+  &:active{
+    background-color: var(--GrenColorActive);
   }
 }

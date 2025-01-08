@@ -4,8 +4,8 @@ import HomePage from "./pages/HomePage/HomePage";
 import DataContext from "./context";
 import Authorization from "./pages/Auth/Authorization";
 import "./styles/app.css";
-import { GetOrders, getAllClients } from "./API/ApiReguest";
-import { tableHeadAppoint, tableHeadClient } from "./components/UniversalTable/HeaderTable";
+import { GetAllUsers, GetOrders, getAllClients } from "./API/ApiReguest";
+import { tableHeadAppoint, tableHeadClient, tableHeadUsers } from "./components/UniversalTable/HeaderTable";
 import { funFixDataTable } from "./function";
 import InfoClient from "./pages/InfoClient/InfoClient";
 
@@ -34,7 +34,14 @@ function App() {
           }
         });
         break;
-      case "Staff":
+      case "Users":
+        GetAllUsers().then((res) => {
+          if (res?.status === 200) {
+            setDataTable(res?.data);
+            setFilteredDataTable(res?.data); // Изначально отфильтрованные данные равны всем данным
+            setTableHeader(tableHeadUsers);
+          }
+        })
         break;
       case "Services":
         break;

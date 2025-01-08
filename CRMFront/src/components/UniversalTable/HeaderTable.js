@@ -25,3 +25,9 @@ export const tableHeadClient = [
     { key: "info", value: "Информация", isActive: true  },
 ]
 
+export const tableHeadUsers = [
+    { key: "FIO", value: "ФИО", isActive: true  },
+    { key: "email", value: "Почта", isActive: true  },
+    { key: "createdAt", value: "Дата регистрации", isActive: true  },
+    { key: "role", value: "Роль", isActive: true  },
+]

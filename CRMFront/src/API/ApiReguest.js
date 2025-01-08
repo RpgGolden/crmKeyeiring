@@ -72,9 +72,6 @@ export const LoginFunc = async (UserData) => {
     sessionStorage.setItem("accessToken", accessToken);
     sessionStorage.setItem("refreshToken", refreshToken);
     sessionStorage.setItem("userData", JSON.stringify(user));
-    console.log("accessToken", accessToken)
-    console.log("refreshToken", refreshToken)
-    console.log("user", user)
     // Set the refresh token as a cookie
     document.Сookie = `refreshToken=${refreshToken}; path=/; secure; SameSite=Strict`; // Adjust attributes as needed
 
@@ -132,12 +129,9 @@ export const LogOut = async () => {
   }
 };
 
-
-//!
-
-export const GetServices = async () => {
+export const GetAllUsers = async () => {
   try {
-    const response = await http.get(`${server}/service/get/1111`, {
+    const response = await http.get(`${server}/auth/getUsers`, {
       headers: {
         Authorization: `${sessionStorage.getItem("accessToken")}`,
       },
@@ -152,6 +146,34 @@ export const GetServices = async () => {
     }
   }
 };
+
+
+
+export const ChangeRoleUser = async (id, data) => {
+  console.log("data", data)
+  console.log("data", id)
+
+  try {
+    const response = await http.patch(`${server}/service/changeRole/${id}`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Произошла ошибка при выполнении запроса!");
+      return false;
+    }
+  }
+};
+
+
+
+
+
 
 export const GetOrders = async () => {
   try {

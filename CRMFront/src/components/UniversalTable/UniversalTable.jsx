@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./UniversalTable.module.scss";
 import DataContext from "../../context";
-import { UpdateStatus } from "../../API/ApiReguest";
+import { ChangeRoleUser, UpdateStatus } from "../../API/ApiReguest";
 import { useNavigate } from "react-router-dom";
 
 function UniversalTable(props) {
@@ -91,6 +91,36 @@ function UniversalTable(props) {
     }
   }
 
+  const ClickRoleButton = (rowId, value) => {
+    let data = {};
+    if(rowId === JSON.parse(sessionStorage.getItem("userData")).id){
+      context.setVizibleePopUp("PopUpError")
+      context.setTextPopUp("Вы не можете изменить свою роль!")
+      return;
+    }
+    if(value === "Администратор"){
+      data = {
+        newRole: 2,
+      }
+    }else{
+      data = {
+        newRole: 1,
+      }
+    }
+    if(rowId !== sessionStorage.getItem("userData")){
+      ChangeRoleUser(rowId, data).then((res) => {
+        if (res?.status === 200) {
+          context?.getTableData(context?.activeTable);
+        }
+      });
+    }
+  }
+ 
+  const rolesMap = {
+    ADMINISTRATOR: "Администратор",
+    COOK: "Повар",
+  };
+
   const getValue = (value, key, rowIndex, rowId, row) => {
     switch (key) {
       case "status":
@@ -117,6 +147,8 @@ function UniversalTable(props) {
       case "number":
         return rowIndex + 1 || "___";
       case "lastOrderDate":
+        case "createdAt":
+          case "eventStartDate":
         return getNormalDate(value);
       case "info":
         return (
@@ -129,6 +161,17 @@ function UniversalTable(props) {
             </button>
           </div>
         );
+         case "FIO":
+        return `${row?.surname} ${row?.name} ${row?.patronymic}` || "___";
+        case "role":
+        return <div className={styles.RoleClicker}>
+            <div
+              className={styles.status}
+              onClick={() => ClickRoleButton(rowId, rolesMap[value])}
+            >
+              {rolesMap[value] || "___"}
+            </div>
+        </div>
       default:
         return value || "___";
     }
