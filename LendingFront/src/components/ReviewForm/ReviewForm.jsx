@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import styles from "./ReviewForm.module.scss"; // Импорт стилей
+import { CreateFeedback, GetAllFeedback } from "../../API/ApiRequest";
 
 function ReviewForm() {
     const nameRef = useRef();
@@ -9,15 +10,22 @@ function ReviewForm() {
     const [imagePreview, setImagePreview] = useState(null);
     const [fileName, setFileName] = useState("Файл не выбран");
     const [formData, setFormData] = useState({
-        name: "",
-        text: "",
+        phone: "+7",
+        description: "",
         image: null,
+        score: 0,
+    });
+
+    const [errors, setErrors] = useState({
+        phone: "",
+        description: "",
+        score: "",
     });
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setFileName(file.name); // Устанавливаем имя выбранного файла
+            setFileName(file.name);
             setFormData((prevData) => ({
                 ...prevData,
                 image: file,
@@ -29,27 +37,73 @@ function ReviewForm() {
             };
             reader.readAsDataURL(file);
         } else {
-            setFileName("Файл не выбран"); // Возврат к тексту по умолчанию
+            setFileName("Файл не выбран");
         }
+    };
+
+    const handlePhoneChange = (e) => {
+        const value = e.target.value;
+        if (value.startsWith("+7")) {
+            setFormData((prevData) => ({ ...prevData, phone: value }));
+        } else {
+            setFormData((prevData) => ({ ...prevData, phone: "+7" }));
+        }
+    };
+
+    const handleStarClick = (score) => {
+        setFormData((prevData) => ({ ...prevData, score }));
+    };
+
+    const validateForm = () => {
+        let valid = true;
+        const newErrors = { phone: "", description: "", score: "" };
+
+        if (!formData.phone || !/^\+7\d{10}$/.test(formData.phone)) {
+            newErrors.phone = "Введите корректный номер телефона в формате +7XXXXXXXXXX.";
+            valid = false;
+        }
+
+        if (formData.description.length > 0) {
+            newErrors.description = "Введите текст отзыва.";
+            valid = false;
+        }
+
+        if (formData.score === 0) {
+            newErrors.score = "Пожалуйста, оцените обслуживание.";
+            valid = false;
+        }
+
+        setErrors(newErrors);
+        return valid;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const name = nameRef.current.value;
-        const text = textRef.current.value;
-        const image = formData.image;
 
-        if (name && text) {
-            // Здесь можно отправить данные на сервер, например, с помощью Fetch или Axios
-            console.log("Отправляем отзыв:", { name, text, image });
-            // Очистить форму после отправки
-            nameRef.current.value = "";
-            textRef.current.value = "";
-            fileInputRef.current.value = "";
-            setFileName("Файл не выбран");
-            setImagePreview(null);
-            setFormData({ name: "", text: "", image: null });
-        }
+        if (!validateForm()) return;
+
+        const phone = nameRef.current.value;
+        const description = textRef.current.value;
+        const image = formData.image;
+        const formDataDatas = new FormData();
+        formDataDatas.append("phone", phone);
+        formDataDatas.append("description", description);
+        formDataDatas.append("image", image);
+        formDataDatas.append("score", formData.score);
+
+        CreateFeedback(formDataDatas).then((resp) => {
+            if (resp?.status === 200) {
+                alert("Спасибо! Ваш отзыв успешно отправлен!");
+            }
+        });
+
+        nameRef.current.value = "";
+        textRef.current.value = "";
+        fileInputRef.current.value = "";
+        setFileName("Файл не выбран");
+        setImagePreview(null);
+        setFormData({ phone: "+7", description: "", image: null, score: 0 });
+        setErrors({ phone: "", description: "", score: "" });
     };
 
     return (
@@ -57,16 +111,20 @@ function ReviewForm() {
             <div>
                 <form className={styles.reviewForm} onSubmit={handleSubmit}>
                     <div className={styles.formGroup}>
-                        <label htmlFor="name">Ваше ФИО:</label>
+                        <label htmlFor="phone">Ваш номер телефона:</label>
                         <input
-                            id="name"
+                            id="phone"
                             ref={nameRef}
                             type="text"
+                            value={formData.phone}
+                            onChange={handlePhoneChange}
                             className={styles.inputField}
-                            placeholder="Введите ваше ФИО"
+                            placeholder="Введите номер телефона"
                             required
                         />
+                        {errors.phone && <span className={styles.error}>{errors.phone}</span>}
                     </div>
+
                     <div className={styles.formGroup}>
                         <label htmlFor="text">Текст отзыва:</label>
                         <textarea
@@ -77,7 +135,9 @@ function ReviewForm() {
                             rows="5"
                             required
                         />
+                        {errors.description && <span className={styles.error}>{errors.description}</span>}
                     </div>
+
                     <div className={styles.formGroup}>
                         <label htmlFor="image">Прикрепить фотографию:</label>
                         <div className={styles.customFileInput}>
@@ -100,6 +160,27 @@ function ReviewForm() {
                         </div>
                         {imagePreview && <img src={imagePreview} alt="Превью" className={styles.imagePreview} />}
                     </div>
+
+                    <div className={styles.formGroup}>
+                        <label>Оцените обслуживание:</label>
+                        <div className={styles.stars}>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    className={
+                                        formData.score >= star
+                                            ? styles.starActive
+                                            : styles.star
+                                    }
+                                    onClick={() => handleStarClick(star)}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                        </div>
+                        {errors.score && <span className={styles.error}>{errors.score}</span>}
+                    </div>
+
                     <button type="submit" className={styles.submitButton}>Отправить</button>
                 </form>
             </div>

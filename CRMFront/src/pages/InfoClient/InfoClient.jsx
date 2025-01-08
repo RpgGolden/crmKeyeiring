@@ -87,6 +87,36 @@ function InfoClient() {
                     </tbody>
                 </table>
             </div>
+
+            <div className={styles.ordersHistory} style={{ marginTop: "20px" }}>
+                <h2>История отзывов</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Текст отзыва</th>
+                            <th>Оценка</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {dataClient?.feedbacks?.length === 0 ? (
+                        <tr>
+                            <td colSpan="3">Отзывов нет</td>
+                        </tr>
+                    ) : (
+                        dataClient?.feedbacks.map((feedback, index) => (
+                            <tr key={feedback.id}>
+                                <td>{index + 1}</td>
+                                <td>{feedback.description}</td>
+                                <td>{feedback.score}</td>
+                            </tr>
+                        ))
+                        )
+                    }
+                      
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

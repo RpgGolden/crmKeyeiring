@@ -23,4 +23,22 @@ export const CreateOrder = async (Data) => {
         console.log("Такой пользователь уже существует!");
     }
   };
+
+  export const CreateFeedback = async (data) => {
+    try {
+      const response = await http.post(`${server}/client/createFeedback`, data);
+      return response;
+    } catch (error) {
+        console.log("Такой пользователь уже существует!");
+    }
+  };
+
+  export const GetAllFeedback = async () => {
+    try {
+      const response = await http.get(`${server}/client/getFeedbacksSite`);
+      return response;
+    } catch (error) {
+        console.log("Такой пользователь уже существует!");
+    }
+  };
   

@@ -82,6 +82,14 @@ const ReviewsSlider = ({ reviews }) => {
         };
     }, [dragging, startX, currentX]);
 
+    const getRewievsStars = (score) => {
+        const stars = [];
+        for (let i = 0; i < score; i++) {
+            stars.push(<span key={i} className={styles.star}>★</span>);
+        }
+        return stars;
+    };
+
     return (
         <section id="reviews" className={styles.reviewsSection}>
             <h2>Отзывы наших клиентов</h2>
@@ -96,13 +104,14 @@ const ReviewsSlider = ({ reviews }) => {
                     {reviews.map((review, index) => (
                         <div key={index} className={styles.reviewItem}>
                             <img
-                                src={review.img}
+                                src={`http://localhost:3000/${review.image}`}
                                 alt="Отзыв"
                                 className={styles.reviewImage}
                             />
                             <div className={styles.reviewContent}>
-                                <p className={styles.reviewText}>{review.text}</p>
-                                <p className={styles.reviewAuthor}>— {review.author}</p>
+                                <p className={styles.reviewText}>{review.description}</p>
+                                <p className={styles.reviewAuthor}>— {review.client.clientName}</p>
+                                <p className={styles.reviewStars}>Оценка: {getRewievsStars(review.score)}</p>
                             </div>
                         </div>
                     ))}

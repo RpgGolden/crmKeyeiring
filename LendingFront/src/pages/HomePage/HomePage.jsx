@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Head from "../../components/Header/Head";
 import styles from "./HomePage.module.scss";
 import Form from "../../components/Form/Form";
-import { GetAllService } from "../../API/ApiRequest";
+import { GetAllFeedback, GetAllService } from "../../API/ApiRequest";
 import ServiseCard from "../../components/ServiseCard/ServiseCard";
 import ReviewForm from "../../components/ReviewForm/ReviewForm";
 import ReviewsSlider from "../../components/ReviewsSlider/ReviewsSlider";
@@ -12,24 +12,7 @@ function HomePage() {
     const sliderRef = useRef(null);
     const [service, setService] = useState([]);
     const [currentSlide, setCurrentSlide] = useState(0);
-
-    const reviews = [
-        {
-            img: "/img/1.jpg",
-            text: "Отличный кейтеринг! Все гости были в восторге от блюд и сервировки. Спасибо за профессионализм!",
-            author: "Анна Петрова"
-        },
-        {
-            img: "/img/5.jpg",
-            text: "Все было на высшем уровне! Обслуживание, еда и организация просто великолепны.",
-            author: "Иван Смирнов"
-        },
-        {
-            img: "/img/3.webp",
-            text: "Я искренне рекомендую эту компанию! Наше мероприятие стало незабываемым.",
-            author: "Екатерина Иванова"
-        }
-    ];
+    const [reviews, setReviews] = useState([]);
 
     const handlePrev = () => {
         setCurrentSlide((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
@@ -52,6 +35,12 @@ function HomePage() {
             if (resp?.status === 200) {
                 console.log("resp", resp.data);
                 setService(resp.data);
+            }
+        });
+
+        GetAllFeedback().then((resp) => {
+            if (resp?.status === 200) {
+                setReviews(resp.data);
             }
         });
     }, []);

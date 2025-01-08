@@ -157,3 +157,25 @@ label {
     object-fit: cover;
     border-radius: 4px;
 }
+
+.stars {
+    display: flex;
+    gap: 5px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.star {
+    color: #ccc; // Цвет невыбранных звезд
+    transition: color 0.3s ease;
+}
+
+.starActive {
+    color: #ffc107; // Цвет выбранных звезд
+    transition: color 0.3s ease;
+}
+
+.star:hover,
+.star:hover ~ .star {
+    color: #ffda44; // Цвет звезд при наведении
+}
