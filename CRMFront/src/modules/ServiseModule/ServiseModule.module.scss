@@ -1,0 +1,35 @@
+.ServiseModule{
+    margin-top: 75px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
+    .createServise{
+        height: 420px;
+        width: 300px; 
+        // box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        border: 1px solid var(--GrenColor);
+        border-radius: 8px;
+        font-size: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+        cursor: pointer;
+        transition: 0.1s linear all;
+        &:hover{
+            background-color: var(--GrenColor);
+            color: #fff;
+        }
+        &:active{
+            background-color: var(--GrenColorActive);
+        }
+    }
+}
+.ServiseModuleContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 100px;
+}

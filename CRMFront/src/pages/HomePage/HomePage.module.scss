@@ -31,7 +31,7 @@
     justify-content: space-between;
     width: 100%;
     margin-top: 80px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     input{
         padding: 15px 10px;
         width: 200px;
@@ -55,7 +55,7 @@
 
     button{
         background-color: var(--GrenColor);
-        padding: 15px 30px;
+        padding: 12px 30px;
         border: none;
         border-radius: 8px;
         margin: 0px 5px;
@@ -69,4 +69,8 @@
             background-color: var(--GrenColorActive);
         }
     }
+}
+.ClientsTable{
+    margin-top: 85px;
+    width: 1366px;
 }

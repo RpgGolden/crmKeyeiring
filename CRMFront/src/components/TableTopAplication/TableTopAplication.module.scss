@@ -1,0 +1,134 @@
+.developPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 60px);
+    padding-top: 100px;
+
+    /* Подключаем анимацию */
+    animation: slide-down 1s ease forwards;
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(-100%);
+        opacity: 0; /* Прозрачность в начале */
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1; /* Полная видимость в конце */
+    }
+}
+
+.developPage img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+.ButtonInnerContainer{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 80px;
+    margin-bottom: 10px;
+    input{
+        padding: 15px 10px;
+        width: 200px;
+        border: 1px solid var(--GrayColorInput);
+        font-size: 16px;
+        color: var(--GrenColor);
+        box-sizing: border-box;
+        background-color: inherit;
+        margin: 0px 5px;
+        border: none;
+        border-bottom: 1px solid var(--GrenColor);
+        &:focus{
+            outline: none;
+        }
+    }
+}
+.ButtonInner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button{
+        background-color: var(--GrenColor);
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        margin: 0px 5px;
+        color: #fff;
+        font-size: 16px;
+        &:hover{
+            cursor: pointer;
+            background-color: var(--GrenColorHover);
+        }
+        &:active{
+            background-color: var(--GrenColorActive);
+        }
+    }
+}
+
+
+.FilterContainer {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .CustomDropdown {
+    position: relative;
+    width: 200px;
+    top: 8px;
+  }
+  
+  .SelectedOption {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    transition: border-color 0.3s;
+  }
+  
+  .SelectedOption:hover {
+    border-color: var(--GrenColor);
+  }
+  
+  .Arrow {
+    font-size: 12px;
+    color: var(--GrenColor);
+  }
+  
+  .DropdownList {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    margin-top: 5px;
+  }
+  
+  .DropdownItem {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .DropdownItem:hover {
+    background-color: #f8f9fa;
+    color: var(--GrenColor);
+  }
+  
