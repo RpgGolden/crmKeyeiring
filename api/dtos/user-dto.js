@@ -6,6 +6,7 @@ export default class UserDto {
     patronymic;
     email;
     role;
+    createdAt;
 
     constructor(model) {
         this.id = model.id;
@@ -14,5 +15,6 @@ export default class UserDto {
         this.patronymic = model.patronymic;
         this.email = model.email;
         this.role = rolesMap[model.role];
+        this.createdAt = model.createdAt;
     }
 }
