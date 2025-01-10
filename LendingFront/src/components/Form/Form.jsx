@@ -50,7 +50,7 @@ function Form(props) {
     <div className={styles.formContainer}>
       <div className={styles.formContainerInner}>
         <div className={styles.contactForm}>
-          <h2>Форма обратной связи</h2>
+          <h2>Оформление заказа</h2>
           <button
             className={styles.close}
             onClick={() => props.closeForm()}
