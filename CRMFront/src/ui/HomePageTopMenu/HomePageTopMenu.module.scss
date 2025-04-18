@@ -4,12 +4,20 @@
     background-color: rgb(255, 255, 255);
     height: 60px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
     border-radius: 5px;
     z-index: 1000;
     position: absolute;
     top: 0;
+    padding: 0 20px;
+    box-sizing: border-box;
+    align-items: center;
+    .Logo{
+        img{
+            height: 30px;
+        }
+    }
     ul{
         list-style: none;
         display: flex;
@@ -18,7 +26,7 @@
         width: 100%;
         padding: 0 20px;
         box-sizing: border-box;
-        width: 600px;
+        width: fit-content;
         li{
             padding: 0 20px;
             padding-bottom: 2px;
@@ -26,6 +34,52 @@
                 // border-bottom: 1px solid var(--GrenColorHover);
                 color: var(--GrenColor);
                 cursor: pointer;
+            }
+        }
+    }
+    img{
+        height: 50px;
+
+    }
+    .User{
+        position: relative;
+        transition: 0.05s linear all;
+        .userName{
+            &:hover{
+                border-bottom: 1px solid var(--GrenColorHover);
+                cursor: pointer;
+            }
+        }
+      
+        .userDataContainer{
+            position: absolute;
+            padding: 10px;
+            top: 50px;
+            right: -5px;
+            background-color: white;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
+            font-size: 16px;
+            width: 200px;
+            .exit{
+                display: flex;
+                justify-content: end;
+                button{
+                    margin-top: 10px;
+                    border: none;
+                    background: inherit;
+                    background-color: var(--GrenColor);
+                    padding: 5px 10px;
+                    border-radius: 4px;
+                    color: #fff;
+                    &:hover{
+                        cursor: pointer;
+                        background-color: var(--GrenColorHover);
+                    }
+                    &:active{
+                        background-color: var(--GrenColorActive);
+                    }
+                }
             }
         }
     }

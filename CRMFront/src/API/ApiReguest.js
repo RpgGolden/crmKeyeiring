@@ -72,9 +72,6 @@ export const LoginFunc = async (UserData) => {
     sessionStorage.setItem("accessToken", accessToken);
     sessionStorage.setItem("refreshToken", refreshToken);
     sessionStorage.setItem("userData", JSON.stringify(user));
-    console.log("accessToken", accessToken)
-    console.log("refreshToken", refreshToken)
-    console.log("user", user)
     // Set the refresh token as a cookie
     document.Сookie = `refreshToken=${refreshToken}; path=/; secure; SameSite=Strict`; // Adjust attributes as needed
 
@@ -102,7 +99,7 @@ export const Register = async (UserData) => {
     if (error?.response?.status === 403) {
       window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
     } else {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
       return false;
     }
   }
@@ -112,7 +109,9 @@ export const LogOut = async () => {
   try {
     const response = await http.post(
       `${server}/auth/logout`,
-      {},
+      {
+        refreshToken: sessionStorage.getItem("refreshToken"),
+      },
       {
         headers: {
           Authorization: `${sessionStorage.getItem("accessToken")}`,
@@ -130,12 +129,9 @@ export const LogOut = async () => {
   }
 };
 
-
-//!
-
-export const GetServices = async () => {
+export const GetAllUsers = async () => {
   try {
-    const response = await http.get(`${server}/service/get/1111`, {
+    const response = await http.get(`${server}/auth/getUsers`, {
       headers: {
         Authorization: `${sessionStorage.getItem("accessToken")}`,
       },
@@ -145,14 +141,41 @@ export const GetServices = async () => {
     if (error?.response?.status === 403) {
       window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
     } else {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
       return false;
     }
   }
 };
 
+
+
+export const ChangeRoleUser = async (id, data) => {
+  console.log("data", data)
+  console.log("data", id)
+
+  try {
+    const response = await http.patch(`${server}/service/changeRole/${id}`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Произошла ошибка при выполнении запроса!");
+      return false;
+    }
+  }
+};
+
+
+
+
+
+
 export const GetOrders = async () => {
-  console.log("sessionStorage.getItem('accessToken')", sessionStorage.getItem('accessToken'))
   try {
     const response = await http.get(`${server}/order/get`, {
       headers: {
@@ -164,8 +187,169 @@ export const GetOrders = async () => {
     if (error?.response?.status === 403) {
       window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
     } else {
-      console.log("Такой пользователь уже существует!");
+      console.log("Произошла ошибка при выполнении запроса!");
       return false;
     }
   }
 };
+
+export const GetOneOrders = async (id) => {
+  try {
+    const response = await http.get(`${server}/order/get/${id}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Произошла ошибка при выполнении запроса!");
+      return false;
+    }
+  }
+};
+
+export const UpdateOrders = async (id, data) => {
+  try {
+    const response = await http.patch(`${server}/order/update/${id}`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Произошла ошибка при выполнении запроса!");
+      return false;
+    }
+  }
+};
+
+
+
+export const UpdateStatus = async (data) => {
+  try {
+    const response = await http.post(`${server}/order/changeStatus`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+
+
+
+
+export const GetAllService = async () => {
+  try {
+    const response = await http.get(`${server}/service/getAll`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+
+export const CreateService = async (data) => {
+  try {
+    const response = await http.post(`${server}/service/create`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+
+export const DeleteService = async (idService) => {
+  try {
+    const response = await http.delete(`${server}/service/delete/${idService}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+
+export const GetOneService = async (idService) => {
+  try {
+    const response = await http.get(`${server}/service/get/${idService}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+
+export const UpdateService = async (data, nameService) => { 
+  console.log("nameService", nameService)
+  console.log("data", data)
+  try {
+    const response = await http.patch(`${server}/service/update/${nameService}`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+}
+
+export const getAllClients = async () => {
+  try {
+    const response = await http.get(`${server}/client/getAll`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+}
+
+export const getOneClient = async (id) => {
+  try {
+    const response = await http.get(`${server}/client/getOne/${id}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+}
+
+export const getOrdersClient = async (id) => {
+  try {
+    const response = await http.get(`${server}/client/getClientOrders/${id}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+      console.log("Произошла ошибка при выполнении запроса!");
+  }
+}
+

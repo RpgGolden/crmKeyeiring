@@ -2,22 +2,47 @@ import { useEffect, useRef, useState } from "react";
 import Head from "../../components/Header/Head";
 import styles from "./HomePage.module.scss";
 import Form from "../../components/Form/Form";
+import { GetAllFeedback, GetAllService } from "../../API/ApiRequest";
+import ServiseCard from "../../components/ServiseCard/ServiseCard";
+import ReviewForm from "../../components/ReviewForm/ReviewForm";
+import ReviewsSlider from "../../components/ReviewsSlider/ReviewsSlider";
 
 function HomePage() {
 
     const sliderRef = useRef(null);
+    const [service, setService] = useState([]);
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [reviews, setReviews] = useState([]);
+
+    const handlePrev = () => {
+        setCurrentSlide((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
+    };
+
+    const handleNext = () => {
+        setCurrentSlide((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
+    };
 
     useEffect(() => {
         const slider = sliderRef.current;
 
         if (slider && !slider.dataset.cloned) {
-            // Дублируем содержимое только один раз
             const clonedSlides = slider.innerHTML;
             slider.insertAdjacentHTML("beforeend", clonedSlides);
-
-            // Добавляем атрибут, чтобы пометить, что слайды уже дублировались
             slider.dataset.cloned = "true";
         }
+
+        GetAllService().then((resp) => {
+            if (resp?.status === 200) {
+                console.log("resp", resp.data);
+                setService(resp.data);
+            }
+        });
+
+        GetAllFeedback().then((resp) => {
+            if (resp?.status === 200) {
+                setReviews(resp.data);
+            }
+        });
     }, []);
 
     const [clickZacaz, setClickZacaz] = useState(false);
@@ -36,7 +61,7 @@ function HomePage() {
                     </section>
                 <div className={styles.container}>
                     <section id="about" className={styles.about}>
-                        <h2>О нас</h2>
+                        <h2 className={styles.Title}>О нас</h2>
                         <div className={styles.aboutContent}>
                             <div className={styles.aboutText}>
                                 <p>Мы создаем уникальные гастрономические впечатления для ваших событий: от камерных встреч до масштабных праздников.</p>
@@ -51,7 +76,7 @@ function HomePage() {
 
 
                     <section id="advantages" className={styles.advantages}>
-                        <h2>Наши преимущества</h2>
+                        <h2 className={styles.Title}>Наши преимущества</h2>
                         <div className={styles.advantagesGrid}>
                             <div className={styles.advantageCard}>
                                 <img src="/img/menu.jpg" alt="Изысканное меню" />
@@ -101,7 +126,7 @@ function HomePage() {
                     <div className={styles.container}>
                     {/* Галерея */}
                     <section id="gallery" className={styles.gallery}>
-                        <h2>Галерея</h2>
+                        <h2 className={styles.Title}>Галерея</h2>
                         <div className={styles.gallerySlider}>
                             <div ref={sliderRef} className={styles.sliderTrack}>
                                 <img src="/img/s1.jpg" alt="Сервировка" />
@@ -117,55 +142,21 @@ function HomePage() {
 
 
                     <section id="prices" className={styles.prices}>
-                        <h2>Наши услуги</h2>
+                        <h2 className={styles.Title}>Наши услуги</h2>
                         <div className={styles.cardContainer}>
-                            <div className={styles.card}>
-                                <img src="/img/fursh.webp" alt="Фуршет"/>
-                                <h3>Фуршет</h3>
-                                <p>Легкие закуски и напитки</p>
-                                <span>от 2000 ₽/гость</span>
-                               <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
-                            <div className={styles.card}>
-                                <img src="/img/banket.webp" alt="Банкет"/>
-                                <h3>Банкет</h3>
-                                <p>Полное меню с обслуживанием</p>
-                                <span>от 3500 ₽/гость</span>
-                                <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
-                            <div className={styles.card}>
-                                <img src="/img/kofe.webp" alt="Кофе-брейк"/>
-                                <h3>Кофе-брейк</h3>
-                                <p>Кофе, чай и свежая выпечка</p>
-                                <span>от 800 ₽/гость</span>
-                                <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
-                            <div className={styles.card}>
-                                <img src="/img/fursh.webp" alt="Фуршет"/>
-                                <h3>Порционное питание</h3>
-                                <p>Порционное питание</p>
-                                <span>от 1300 ₽/гость</span>
-                                <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
-                            <div className={styles.card}>
-                                <img src="/img/banket.webp" alt="Банкет"/>
-                                <h3>Линия раздачи</h3>
-                                <p>Для большого объема посетителей</p>
-                                <span>от 1500 ₽/гость</span>
-                                <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
-                            <div className={styles.card}>
-                                <img src="/img/kofe.webp" alt="Кофе-брейк"/>
-                                <h3>Все включено</h3>
-                                <p>Все блюда включены в цену</p>
-                                <span>от 5000 ₽/гость</span>
-                                <button onClick={() => setClickZacaz(true)}>Заказать</button>
-                            </div>
+                        {service.length === 0 ? <p>Услуги не найдены</p> :
+                            (
+                                service?.map((item, index) => <ServiseCard key={index} item={item} setClickZacaz={setClickZacaz}/>) 
+                            )
+                        }
                         </div>
                     </section>
+
+                     {/* Слайдер отзывов */}
+                    <ReviewsSlider reviews={reviews}/>
                     
                     <section id="howItWorks" className={styles.howItWorks}>
-                        <h2>Как это работает</h2>
+                        <h2 className={styles.Title}>Как это работает</h2>
                         <div className={styles.steps}>
                             <div className={styles.step}>
                                 <div className={styles.circle}>
@@ -189,6 +180,11 @@ function HomePage() {
                                 <p id="form">Гости не испытают неудобств и будут приятно удивлены</p>
                             </div>
                         </div>
+                    </section>
+
+                    <section>
+                    <h2 className={styles.Title}>Оставьте отзыв</h2>
+                        <ReviewForm/>
                     </section>
                 </div>
                 {
