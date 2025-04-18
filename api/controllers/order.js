@@ -87,6 +87,33 @@ export default {
         }
     },
 
+
+        async getMany(req, res) {
+        try {
+            const orders = await Order.findAll({
+                include: [Client],
+                order: [
+                    ['status', 'DESC'],
+                    ['createdAt', 'DESC'],
+                ],
+            });
+            const ordersDto = orders.map(order => new OrderDto(order));
+
+            // Удаляем временную зону из eventStartDate
+            const ordersWithoutTimeZone = ordersDto.map(order => {
+                return {
+                    ...order,
+                    eventStartDate: removeTimeZone(order.eventStartDate),
+                    createdAt: removeTimeZone(order.createdAt),
+                };
+            });
+            return res.json(ordersWithoutTimeZone);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+        }
+    },
+
     async changeStatus(req, res) {
         try {
             const { id, status } = req.body;
@@ -210,31 +237,7 @@ export default {
         }
     },
 
-    async getMany(req, res) {
-        try {
-            const orders = await Order.findAll({
-                include: [Client],
-                order: [
-                    ['status', 'DESC'],
-                    ['createdAt', 'DESC'],
-                ],
-            });
-            const ordersDto = orders.map(order => new OrderDto(order));
 
-            // Удаляем временную зону из eventStartDate
-            const ordersWithoutTimeZone = ordersDto.map(order => {
-                return {
-                    ...order,
-                    eventStartDate: removeTimeZone(order.eventStartDate),
-                    createdAt: removeTimeZone(order.createdAt),
-                };
-            });
-            return res.json(ordersWithoutTimeZone);
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ error: 'Internal Server Error', message: error.message });
-        }
-    },
 
     async getAllCanceled(req, res) {
         try {

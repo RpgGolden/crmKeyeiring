@@ -29,6 +29,7 @@ export default {
 
             const user = await User.create({ name, surname, patronymic, email, password: hashedPassword });
 
+
             // Генерируем и сохраняем JWT-токены
             const { accessToken, refreshToken } = jwtUtils.generate({ id: user.id });
             await jwtUtils.saveToken(user.id, refreshToken);
@@ -123,4 +124,5 @@ export default {
             res.status(500).json({ error: 'Internal server error' });
         }
     },
+
 };
