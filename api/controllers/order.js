@@ -1,16 +1,16 @@
 import { AppErrorMissing } from '../utils/errors.js';
 import Order from '../models/order.js';
-import Client from '../models/client.js';
+import User from '../models/user.js';
 import OrderDto from '../dtos/order-dto.js';
 import sendOrderConfirmationEmail from '../utils/mailer.js';
 import removeTimeZone from '../utils/removetimezone.js';
+import Dish from '../models/dish.js';
+import OrderDish from '../models/orderDish.js';
+
 export default {
     async createOrder(req, res) {
         try {
-            let {
-                clientName,
-                clientEmail,
-                clientPhone,
+            const {
                 numberOfPeople,
                 eventType,
                 preferences,
@@ -18,66 +18,60 @@ export default {
                 budget,
                 deliveryMethod,
                 deliveryAddress,
+                dishes,
             } = req.body;
 
             if (!numberOfPeople || !eventType || !eventStartDate || !budget || !deliveryMethod || !deliveryAddress) {
                 throw new AppErrorMissing('Не все данные заполнены');
             }
 
-            const eventStartDateObj = new Date(eventStartDate);
+            const userId = req.user.id;
+            const user = await User.findByPk(userId);
 
-            eventStartDateObj.setHours(eventStartDateObj.getHours() + 6);
-
-            const formattedEventStartDate = eventStartDateObj.toISOString().slice(0, -5);
-
-            let clientId;
-            const existingUser = await Client.findOne({ where: { clientPhone } });
-
-            if (existingUser) {
-                clientId = existingUser.id;
-                clientName = existingUser.clientName;
-                clientEmail = existingUser.clientEmail;
-                clientPhone = existingUser.clientPhone;
-            } else {
-                const client = await Client.create({
-                    clientName,
-                    clientEmail,
-                    clientPhone,
-                });
-                clientId = client.id;
+            if (!user) {
+                return res.status(404).json({ error: 'Пользователь не найден' });
             }
-            const currentDate = new Date();
-            const dateWithAddedHours = new Date(currentDate.getTime() + 3 * 60 * 60 * 1000);
 
             const order = await Order.create({
-                clientId,
-                clientName,
-                clientEmail,
-                clientPhone,
+                clientId: user.id,
+                clientName: user.name,
+                clientEmail: user.email,
+                clientPhone: user.phone,
                 numberOfPeople,
                 eventType,
                 preferences: preferences || '',
-                eventStartDate: formattedEventStartDate,
+                eventStartDate,
                 budget,
                 deliveryMethod,
                 deliveryAddress,
-                createdAt: dateWithAddedHours,
             });
 
-            await order.reload({ include: [Client] });
+            // Add dishes to the order
+            if (dishes && Array.isArray(dishes)) {
+                for (const { dishId, quantity } of dishes) {
+                    const dish = await Dish.findByPk(dishId);
+                    if (!dish) {
+                        return res.status(404).json({ error: `Блюдо с ID ${dishId} не найдено` });
+                    }
+
+                    await OrderDish.create({
+                        orderId: order.id,
+                        dishId: dish.id,
+                        quantity: quantity || 1,
+                    });
+                }
+            }
+
+            await order.reload({ include: [User, Dish] });
             const orderDto = new OrderDto(order);
-            const mailData = formattedEventStartDate.replace('T', ' ');
-            const [datePart, time] = mailData.split(' ');
-            const date = datePart.split('-').reverse().join('.');
-            const concateDate = `${date} в ${time}`;
 
             await sendOrderConfirmationEmail(
-                clientEmail,
-                clientName,
-                clientPhone,
+                user.email,
+                user.name,
+                user.phone,
                 numberOfPeople,
                 eventType,
-                concateDate
+                eventStartDate
             );
 
             return res.json(orderDto);
@@ -87,11 +81,10 @@ export default {
         }
     },
 
-
-        async getMany(req, res) {
+    async getMany(req, res) {
         try {
             const orders = await Order.findAll({
-                include: [Client],
+                include: [User],
                 order: [
                     ['status', 'DESC'],
                     ['createdAt', 'DESC'],
@@ -168,7 +161,7 @@ export default {
             if (!id) {
                 return res.status(400).json({ error: 'ID заказа не указан' });
             }
-            const order = await Order.findByPk(id, { include: [Client] });
+            const order = await Order.findByPk(id, { include: [User] });
 
             if (!order) {
                 return res.status(400).json({ error: 'Такого заказа не существует' });
@@ -178,26 +171,15 @@ export default {
                 return res.status(400).json({ error: 'Заказ уже завершен' });
             }
 
-            const {
-                clientName,
-                clientEmail,
-                clientPhone,
-                numberOfPeople,
-                eventType,
-                preferences,
-                eventStartDate,
-                budget,
-                deliveryMethod,
-                deliveryAddress,
-            } = req.body;
+            const { numberOfPeople, eventType, preferences, eventStartDate, budget, deliveryMethod, deliveryAddress } =
+                req.body;
 
-            const client = await Client.findByPk(order.clientId);
+            // Используем данные пользователя из req.user, но не изменяем их
+            const userId = req.user.id;
+            const user = await User.findByPk(userId);
 
-            if (client) {
-                client.clientName = clientName || client.clientName;
-                client.clientEmail = clientEmail || client.clientEmail;
-                client.clientPhone = clientPhone || client.clientPhone;
-                await client.save();
+            if (!user) {
+                return res.status(404).json({ error: 'Пользователь не найден' });
             }
 
             order.numberOfPeople = numberOfPeople || order.numberOfPeople;
@@ -210,7 +192,7 @@ export default {
 
             await order.save();
 
-            await order.reload({ include: [Client] });
+            await order.reload({ include: [User] });
             const orderDto = new OrderDto(order);
             return res.json(orderDto);
         } catch (error) {
@@ -218,14 +200,13 @@ export default {
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
-
     async getOne(req, res) {
         try {
             const { id } = req.params;
             if (!id) {
                 return res.status(400).json({ error: 'ID заказа не указан' });
             }
-            const order = await Order.findByPk(id, { include: [Client] });
+            const order = await Order.findByPk(id, { include: [User] });
             if (!order) {
                 return res.status(400).json({ error: 'Такого заказа не существует' });
             }
@@ -237,15 +218,13 @@ export default {
         }
     },
 
-
-
     async getAllCanceled(req, res) {
         try {
             const orders = await Order.findAll({
                 where: {
                     status: 'canceled',
                 },
-                include: [Client],
+                include: [User],
             });
             const ordersDto = orders.map(order => new OrderDto(order));
 

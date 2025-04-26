@@ -10,19 +10,19 @@ const router = Router();
 
 router
     .route('/getOne/:id')
-    .get(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.getClient));
+    .get(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.getUser));
 
 router
     .route('/getAll')
-    .get(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.getAllClients));
+    .get(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.getAllUsers));
 
 router
     .route('/:id')
-    .delete(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.deleteClient));
+    .delete(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.deleteUser));
 
 router
     .route('/getClientOrders/:id')
-    .get(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.getClientOrders));
+    .get(authenticateToken, asyncRoute(checkRole([role.ADMINISTRATOR])), asyncRoute(clientController.getUserOrders));
 
 router.route('/createFeedback').post(upload.single('image'), asyncRoute(clientController.createFeedBack));
 

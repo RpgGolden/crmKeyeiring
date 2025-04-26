@@ -15,7 +15,6 @@ export default {
             if (!name || !description || !price) {
                 throw new AppErrorMissing('Не все данные заполнены');
             }
-
             const existingService = await Service.findOne({ where: { name } });
             if (existingService) {
                 throw new AppErrorAlreadyExists('Такая услуга уже существует');

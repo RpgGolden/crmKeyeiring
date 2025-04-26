@@ -1,7 +1,7 @@
 import FeedBackWZClientDto from './feedback-dto-wz-client.js';
 import OrderClientDto from './order-client-dto.js';
 
-export default class ClientFeedBackDto {
+export default class UserFeedBackDto {
     id;
     clientName;
     clientEmail;

@@ -1,5 +1,5 @@
-import Client from '../models/client.js';
-import ClientDto from '../dtos/client-dto.js';
+import User from '../models/user.js';
+import UserDto from '../dtos/user-dto.js';
 import Order from '../models/order.js';
 import FeedBackDto from '../dtos/feedback-dto.js';
 import FeedBack from '../models/feedback.js';
@@ -7,86 +7,87 @@ import removeTimeZone from '../utils/removetimezone.js';
 import path from 'path';
 import FeedBackWZPhoneDto from '../dtos/feedback-withoutphone-dto.js';
 import { AppErrorMissing } from '../utils/errors.js';
-import ClientFeedBackDto from '../dtos/client-dto-feedback.js';
+import UserFeedBackDto from '../dtos/client-dto-feedback.js';
+
 export default {
-    async getClient(req, res) {
+    async getUser(req, res) {
         try {
             const { id } = req.params;
             if (!id) {
-                return res.status(400).json({ error: 'ID клиента не указан' });
+                return res.status(400).json({ error: 'ID пользователя не указан' });
             }
-            const client = await Client.findByPk(id, { include: [Order, FeedBack] });
-            if (!client) {
-                return res.status(400).json({ error: 'Такого клиента не существует' });
+            const user = await User.findByPk(id, { include: [Order, FeedBack] });
+            if (!user) {
+                return res.status(400).json({ error: 'Такого пользователя не существует' });
             }
-            const clientDto = new ClientFeedBackDto(client);
+            const userDto = new UserFeedBackDto(user);
             // Удаляем временную зону из дат в заказах
-            clientDto.orders = clientDto.orders.map(order => ({
+            userDto.orders = userDto.orders.map(order => ({
                 ...order,
                 eventStartDate: removeTimeZone(order.eventStartDate),
                 createdAt: removeTimeZone(order.createdAt),
             }));
 
-            return res.json(clientDto);
+            return res.json(userDto);
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
 
-    async getAllClients(req, res) {
+    async getAllUsers(req, res) {
         try {
-            const clients = await Client.findAll({ include: [Order] });
-            const clientsDto = clients.map(client => {
-                const clientDto = new ClientDto(client);
+            const users = await User.findAll({ include: [Order] });
+            const usersDto = users.map(user => {
+                const userDto = new UserDto(user);
 
-                clientDto.orders = clientDto.orders.map(order => ({
+                userDto.orders = userDto.orders.map(order => ({
                     ...order,
                     eventStartDate: removeTimeZone(order.eventStartDate),
                     createdAt: removeTimeZone(order.createdAt),
                 }));
-                clientDto.count = clientDto.orders.length;
+                userDto.count = userDto.orders.length;
 
-                if (clientDto.orders.length > 0) {
-                    clientDto.orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                    clientDto.lastOrderDate = clientDto.orders[0].createdAt;
+                if (userDto.orders.length > 0) {
+                    userDto.orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    userDto.lastOrderDate = userDto.orders[0].createdAt;
                 } else {
-                    clientDto.lastOrderDate = undefined;
+                    userDto.lastOrderDate = undefined;
                 }
 
-                return clientDto;
+                return userDto;
             });
 
-            return res.json(clientsDto);
+            return res.json(usersDto);
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
 
-    async deleteClient(req, res) {
+    async deleteUser(req, res) {
         try {
             const { id } = req.params;
             if (!id) {
-                return res.status(400).json({ error: 'ID клиента не указан' });
+                return res.status(400).json({ error: 'ID пользователя не указан' });
             }
-            const client = await Client.findByPk(id, { include: [Order] });
-            if (!client) {
-                return res.status(400).json({ error: 'Такого клиента не существует' });
+            const user = await User.findByPk(id, { include: [Order] });
+            if (!user) {
+                return res.status(400).json({ error: 'Такого пользователя не существует' });
             }
-            await client.destroy({ force: true });
-            return res.json({ message: 'Клиент успешно удален' });
+            await user.destroy({ force: true });
+            return res.json({ message: 'Пользователь успешно удален' });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
 
-    async getClientOrders(req, res) {
+    async getUserOrders(req, res) {
         try {
             const { id } = req.params;
             if (!id) {
-                return res.status(400).json({ error: 'ID клиента не указан' });
+                return res.status(400).json({ error: 'ID пользователя не указан' });
             }
             const orders = await Order.findAll({ where: { clientId: id }, order: [['createdAt', 'DESC']] });
             const getCountOrders = orders.length;
@@ -114,14 +115,14 @@ export default {
             if (!phone || !description || !score) {
                 throw new AppErrorMissing('Не все данные заполнены');
             }
-            const client = await Client.findOne({ where: { clientPhone: phone } });
-            if (!client) {
-                throw new AppErrorMissing('Такого клиента не существует');
+            const user = await User.findOne({ where: { phone } });
+            if (!user) {
+                throw new AppErrorMissing('Такого пользователя не существует');
             }
             const image = req.file ? path.posix.join('uploads', req.file.filename) : null;
 
-            const feedback = await FeedBack.create({ clientId: client.id, image, description, score });
-            await feedback.reload({ include: [Client] });
+            const feedback = await FeedBack.create({ clientId: user.id, image, description, score });
+            await feedback.reload({ include: [User] });
 
             const feedBackDto = new FeedBackDto(feedback);
 
@@ -136,9 +137,9 @@ export default {
         try {
             const { id } = req.params;
             if (!id) {
-                return res.status(400).json({ error: 'ID клиента не указан' });
+                return res.status(400).json({ error: 'ID отзыва не указан' });
             }
-            const feedBack = await FeedBack.findByPk(id, { include: [Client] });
+            const feedBack = await FeedBack.findByPk(id, { include: [User] });
             const feedBackDto = new FeedBackDto(feedBack);
             return res.json(feedBackDto);
         } catch (error) {
@@ -149,7 +150,7 @@ export default {
 
     async getFeedBackCRM(req, res) {
         try {
-            const feedBack = await FeedBack.findAll({ include: [Client] });
+            const feedBack = await FeedBack.findAll({ include: [User] });
             const feedBackDto = feedBack.map(feedBack => new FeedBackDto(feedBack));
             return res.json(feedBackDto);
         } catch (error) {
@@ -160,7 +161,7 @@ export default {
 
     async getFeedBackAll(req, res) {
         try {
-            const feedBack = await FeedBack.findAll({ include: [Client] });
+            const feedBack = await FeedBack.findAll({ include: [User] });
             const feedBackDto = feedBack.map(feedBack => new FeedBackWZPhoneDto(feedBack));
             return res.json(feedBackDto);
         } catch (error) {
