@@ -6,14 +6,17 @@ export default class AuthDto {
     surname;
     patronymic;
     login;
+    phone;
     role;
 
-    constructor(model) {
+    constructor(model, isAdmin) {
+
         this.id = model.id;
         this.name = model.name;
         this.surname = model.surname;
         this.patronymic = model.patronymic;
         this.login = model.login;
+        this.phone = !isAdmin ? model.phone : undefined;
         this.role = rolesMap[model.role];
     }
 }

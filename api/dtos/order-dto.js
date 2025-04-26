@@ -18,7 +18,7 @@ export default class OrderDto {
     createdAt;
     dishes; // Add this field
 
-    constructor(model) {
+    constructor(model, host) {
         this.id = model.id;
         this.client = model.User ? new ClientDto(model.User) : null;
         this.numberOfPeople = model.numberOfPeople;
@@ -32,7 +32,7 @@ export default class OrderDto {
         this.createdAt = model.createdAt;
         this.dishes = model.Dishes
             ? model.Dishes.map(dish => ({
-                  ...new DishDto(dish),
+                  ...new DishDto(dish, host),
                   quantity: dish.OrderDish ? dish.OrderDish.quantity : 1, // Include quantity from the join table
               }))
             : [];

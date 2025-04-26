@@ -6,22 +6,15 @@ import sendOrderConfirmationEmail from '../utils/mailer.js';
 import removeTimeZone from '../utils/removetimezone.js';
 import Dish from '../models/dish.js';
 import OrderDish from '../models/orderDish.js';
+import Category from '../models/category.js';
 
 export default {
     async createOrder(req, res) {
         try {
-            const {
-                numberOfPeople,
-                eventType,
-                preferences,
-                eventStartDate,
-                budget,
-                deliveryMethod,
-                deliveryAddress,
-                dishes,
-            } = req.body;
+            const { numberOfPeople, eventType, preferences, eventStartDate, deliveryMethod, deliveryAddress, dishes } =
+                req.body;
 
-            if (!numberOfPeople || !eventType || !eventStartDate || !budget || !deliveryMethod || !deliveryAddress) {
+            if (!numberOfPeople || !eventType || !eventStartDate || !deliveryMethod || !deliveryAddress) {
                 throw new AppErrorMissing('Не все данные заполнены');
             }
 
@@ -32,6 +25,24 @@ export default {
                 return res.status(404).json({ error: 'Пользователь не найден' });
             }
 
+            // Adjust the event start date by adding 6 hours
+            const eventStartDateObj = new Date(eventStartDate);
+            eventStartDateObj.setHours(eventStartDateObj.getHours() + 6);
+            const formattedEventStartDate = eventStartDateObj.toISOString().slice(0, -5);
+
+            let totalBudget = 0;
+
+            // Calculate total budget from dishes
+            if (dishes && Array.isArray(dishes)) {
+                for (const { dishId, quantity } of dishes) {
+                    const dish = await Dish.findByPk(dishId);
+                    if (!dish) {
+                        return res.status(404).json({ error: `Блюдо с ID ${dishId} не найдено` });
+                    }
+                    totalBudget += dish.price * (quantity || 1);
+                }
+            }
+
             const order = await Order.create({
                 clientId: user.id,
                 clientName: user.name,
@@ -40,8 +51,8 @@ export default {
                 numberOfPeople,
                 eventType,
                 preferences: preferences || '',
-                eventStartDate,
-                budget,
+                eventStartDate: formattedEventStartDate,
+                budget: totalBudget,
                 deliveryMethod,
                 deliveryAddress,
             });
@@ -49,21 +60,18 @@ export default {
             // Add dishes to the order
             if (dishes && Array.isArray(dishes)) {
                 for (const { dishId, quantity } of dishes) {
-                    const dish = await Dish.findByPk(dishId);
-                    if (!dish) {
-                        return res.status(404).json({ error: `Блюдо с ID ${dishId} не найдено` });
-                    }
-
                     await OrderDish.create({
                         orderId: order.id,
-                        dishId: dish.id,
+                        dishId,
                         quantity: quantity || 1,
                     });
                 }
             }
 
-            await order.reload({ include: [User, Dish] });
-            const orderDto = new OrderDto(order);
+            await order.reload({
+                include: [User, { model: Dish, include: [Category], through: { attributes: ['quantity'] } }],
+            });
+            const orderDto = new OrderDto(order, process.env.HOST);
 
             await sendOrderConfirmationEmail(
                 user.email,
@@ -71,7 +79,8 @@ export default {
                 user.phone,
                 numberOfPeople,
                 eventType,
-                eventStartDate
+                formattedEventStartDate,
+                totalBudget
             );
 
             return res.json(orderDto);
@@ -84,15 +93,15 @@ export default {
     async getMany(req, res) {
         try {
             const orders = await Order.findAll({
-                include: [User],
+                include: [User, { model: Dish, include: [Category], through: { attributes: ['quantity'] } }],
                 order: [
                     ['status', 'DESC'],
                     ['createdAt', 'DESC'],
                 ],
             });
-            const ordersDto = orders.map(order => new OrderDto(order));
+            const ordersDto = orders.map(order => new OrderDto(order, process.env.HOST));
 
-            // Удаляем временную зону из eventStartDate
+            // Remove timezone from eventStartDate
             const ordersWithoutTimeZone = ordersDto.map(order => {
                 return {
                     ...order,
@@ -147,7 +156,7 @@ export default {
             order.status = status;
             await order.save();
 
-            const orderDto = new OrderDto(order);
+            const orderDto = new OrderDto(order, process.env.HOST);
             return res.json(orderDto);
         } catch (error) {
             console.error(error);
@@ -161,39 +170,64 @@ export default {
             if (!id) {
                 return res.status(400).json({ error: 'ID заказа не указан' });
             }
-            const order = await Order.findByPk(id, { include: [User] });
+            const order = await Order.findByPk(id, {
+                include: [User, { model: Dish, include: [Category], through: { attributes: ['quantity'] } }],
+            });
 
             if (!order) {
-                return res.status(400).json({ error: 'Такого заказа не существует' });
+                return res.status(404).json({ error: 'Такого заказа не существует' });
             }
 
             if (order.status === 'canceled' || order.status === 'completed' || order.status === 'declined') {
                 return res.status(400).json({ error: 'Заказ уже завершен' });
             }
 
-            const { numberOfPeople, eventType, preferences, eventStartDate, budget, deliveryMethod, deliveryAddress } =
+            const { numberOfPeople, eventType, preferences, eventStartDate, deliveryMethod, deliveryAddress, dishes } =
                 req.body;
 
-            // Используем данные пользователя из req.user, но не изменяем их
-            const userId = req.user.id;
-            const user = await User.findByPk(userId);
+            // Adjust the event start date by adding 6 hours
+            const eventStartDateObj = new Date(eventStartDate);
+            eventStartDateObj.setHours(eventStartDateObj.getHours() + 6);
+            const formattedEventStartDate = eventStartDateObj.toISOString().slice(0, -5);
 
-            if (!user) {
-                return res.status(404).json({ error: 'Пользователь не найден' });
-            }
-
+            // Update order details
             order.numberOfPeople = numberOfPeople || order.numberOfPeople;
             order.eventType = eventType || order.eventType;
             order.preferences = preferences || order.preferences;
-            order.eventStartDate = eventStartDate || order.eventStartDate;
-            order.budget = budget || order.budget;
+            order.eventStartDate = formattedEventStartDate || order.eventStartDate;
             order.deliveryMethod = deliveryMethod || order.deliveryMethod;
             order.deliveryAddress = deliveryAddress || order.deliveryAddress;
 
+            let totalBudget = 0;
+
+            // Update dishes in the order and calculate new budget
+            if (dishes && Array.isArray(dishes)) {
+                // Remove existing dishes
+                await OrderDish.destroy({ where: { orderId: order.id } });
+
+                // Add updated dishes
+                for (const { dishId, quantity } of dishes) {
+                    const dish = await Dish.findByPk(dishId);
+                    if (!dish) {
+                        return res.status(404).json({ error: `Блюдо с ID ${dishId} не найдено` });
+                    }
+                    totalBudget += dish.price * (quantity || 1);
+
+                    await OrderDish.create({
+                        orderId: order.id,
+                        dishId: dish.id,
+                        quantity: quantity || 1,
+                    });
+                }
+            }
+
+            order.budget = totalBudget;
             await order.save();
 
-            await order.reload({ include: [User] });
-            const orderDto = new OrderDto(order);
+            await order.reload({
+                include: [User, { model: Dish, include: [Category], through: { attributes: ['quantity'] } }],
+            });
+            const orderDto = new OrderDto(order, process.env.HOST);
             return res.json(orderDto);
         } catch (error) {
             console.error(error);
@@ -206,11 +240,13 @@ export default {
             if (!id) {
                 return res.status(400).json({ error: 'ID заказа не указан' });
             }
-            const order = await Order.findByPk(id, { include: [User] });
+            const order = await Order.findByPk(id, {
+                include: [User, { model: Dish, include: [Category], through: { attributes: ['quantity'] } }],
+            });
             if (!order) {
                 return res.status(400).json({ error: 'Такого заказа не существует' });
             }
-            const orderDto = new OrderDto(order);
+            const orderDto = new OrderDto(order, process.env.HOST);
             return res.json(orderDto);
         } catch (error) {
             console.error(error);
@@ -224,11 +260,11 @@ export default {
                 where: {
                     status: 'canceled',
                 },
-                include: [User],
+                include: [User, { model: Dish, include: [Category], through: { attributes: ['quantity'] } }],
             });
-            const ordersDto = orders.map(order => new OrderDto(order));
+            const ordersDto = orders.map(order => new OrderDto(order, process.env.HOST));
 
-            // Удаляем временную зону из eventStartDate
+            // Remove timezone from eventStartDate
             const ordersWithoutTimeZone = ordersDto.map(order => {
                 return {
                     ...order,

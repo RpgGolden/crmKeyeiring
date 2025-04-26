@@ -32,6 +32,13 @@ export default class User extends Model {
                         is: /^[А-Я][а-я]*$/,
                     },
                 },
+                phone: {
+                    type: DataTypes.STRING,
+                    allowNull: true,
+                    validate: {
+                        isNumeric: true,
+                    },
+                },
                 email: {
                     type: DataTypes.STRING,
                     allowNull: false,

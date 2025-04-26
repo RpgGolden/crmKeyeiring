@@ -10,7 +10,6 @@ export const authenticateToken = async (req, res, next) => {
         if (!token) {
             throw new AppErrorInvalid('No token provided');
         }
-
         // Проверяем валидность токена
         const decoded = await jwtUtils.verifyAccessToken(token);
 

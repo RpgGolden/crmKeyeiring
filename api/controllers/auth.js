@@ -9,17 +9,17 @@ import jwtUtils from '../utils/jwt.js';
 import UserDto from '../dtos/user-dto.js';
 
 import 'dotenv/config';
+import roles from '../config/roles.js';
 
 export default {
-    async register(req, res) {
+    async registerUser(req, res) {
         try {
-            const { name, surname, patronymic, email, password } = req.body;
+            const { name, surname, patronymic, email, phone, password } = req.body;
 
-            if (!name || !surname || !patronymic || !email || !password) {
+            if (!name || !surname || !patronymic || !email || !phone ||!password) {
                 throw new AppErrorMissing('No name, surname, email or password');
             }
 
-            // Проверяем, существует ли пользователь с таким же логином
             const existingUser = await User.findOne({ where: { email } });
             if (existingUser) {
                 throw new AppErrorAlreadyExists('User already exists');
@@ -27,14 +27,55 @@ export default {
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            const user = await User.create({ name, surname, patronymic, email, password: hashedPassword });
+            const user = await User.create({
+                name,
+                surname,
+                patronymic,
+                phone,
+                email,
+                password: hashedPassword,
+                role: roles.CLIENT, // Set role to CLIENT
+            });
 
-
-            // Генерируем и сохраняем JWT-токены
             const { accessToken, refreshToken } = jwtUtils.generate({ id: user.id });
             await jwtUtils.saveToken(user.id, refreshToken);
 
-            const authDto = new AuthDto(user);
+            const authDto = new AuthDto(user, false);
+            return res.json({ ...authDto, accessToken, refreshToken });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    },
+
+    async registerAdmin(req, res) {
+        try {
+            const { name, surname, patronymic, email, password } = req.body;
+
+            if (!name || !surname || !patronymic || !email || !password) {
+                throw new AppErrorMissing('No name, surname, email or password');
+            }
+
+            const existingUser = await User.findOne({ where: { email } });
+            if (existingUser) {
+                throw new AppErrorAlreadyExists('User already exists');
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            const user = await User.create({
+                name,
+                surname,
+                patronymic,
+                email,
+                password: hashedPassword,
+                role: roles.ADMINISTRATOR, // Set role to ADMINISTRATOR
+            });
+
+            const { accessToken, refreshToken } = jwtUtils.generate({ id: user.id });
+            await jwtUtils.saveToken(user.id, refreshToken);
+
+            const authDto = new AuthDto(user, true);
             return res.json({ ...authDto, accessToken, refreshToken });
         } catch (error) {
             console.error(error);
@@ -124,5 +165,4 @@ export default {
             res.status(500).json({ error: 'Internal server error' });
         }
     },
-
 };

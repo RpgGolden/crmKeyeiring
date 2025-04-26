@@ -6,8 +6,8 @@ export default class ClientDto {
 
     constructor(model) {
         this.id = model.id;
-        this.clientName = model.clientName;
-        this.clientEmail = model.clientEmail;
-        this.clientPhone = model.clientPhone;
+        this.clientName = model.name;
+        this.clientEmail = model.email;
+        this.clientPhone = model.phone;
     }
 }

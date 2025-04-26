@@ -12,10 +12,10 @@ export default class Order extends Model {
                     primaryKey: true,
                 },
                 clientId: {
-                    type: DataTypes.INTEGER,
+                    type: DataTypes.UUID, // Ensure this matches the UUID type in User model
                     allowNull: false,
                     references: {
-                        model: 'clients',
+                        model: 'users', // Change this to 'users'
                         key: 'id',
                     },
                 },

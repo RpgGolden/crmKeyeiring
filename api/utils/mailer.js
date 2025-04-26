@@ -6,10 +6,10 @@ async function sendOrderConfirmationEmail(
     clientPhone,
     numberOfPeople,
     eventType,
-    formattedEventStartDate
+    formattedEventStartDate,
+    totalBudget
 ) {
-    
-    try { 
+    try {
         const transporter = nodemailer.createTransport({
             host: 'smtp.yandex.ru',
             port: 587,
@@ -24,7 +24,7 @@ async function sendOrderConfirmationEmail(
             from: '"KC" <armperson007@yandex.ru>',
             to: clientEmail,
             subject: 'Ваш заказ создан',
-            text: `Ваш заказ создан и обрабатывается.\n\nПараметры заказа:\n- Имя клиента: ${clientName}\n- Телефон: ${clientPhone}\n- Количество людей: ${numberOfPeople}\n- Тип мероприятия: ${eventType}\n- Дата начала: ${formattedEventStartDate}\n\nС вами свяжется специалист в течение некоторого времени.`,
+            text: `Ваш заказ создан и обрабатывается.\n\nПараметры заказа:\n- Имя клиента: ${clientName}\n- Телефон: ${clientPhone}\n- Количество людей: ${numberOfPeople}\n- Тип мероприятия: ${eventType}\n- Дата начала: ${formattedEventStartDate}\n\nС вами свяжется специалист в течение некоторого времени. Итоговая цена: ${totalBudget} рублей.\n\nСпасибо за заказ!`,
         };
 
         await transporter.sendMail(mailOptions);
