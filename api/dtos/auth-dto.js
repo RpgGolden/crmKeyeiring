@@ -5,7 +5,7 @@ export default class AuthDto {
     name;
     surname;
     patronymic;
-    login;
+    email;
     phone;
     role;
 
@@ -15,7 +15,7 @@ export default class AuthDto {
         this.name = model.name;
         this.surname = model.surname;
         this.patronymic = model.patronymic;
-        this.login = model.login;
+        this.email = model.email;
         this.phone = !isAdmin ? model.phone : undefined;
         this.role = rolesMap[model.role];
     }
