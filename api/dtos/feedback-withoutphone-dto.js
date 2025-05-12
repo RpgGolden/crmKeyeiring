@@ -7,7 +7,7 @@ export default class FeedBackWZPhoneDto {
     score;
     constructor(model) {
         this.id = model.id;
-        this.client = model.Client ? new ClientWZPhoneDto(model.Client) : null;
+        this.client = model.User ? new ClientWZPhoneDto(model.User) : null;
         this.description = model.description;
         this.image = model.image;
         this.score = model.score;
