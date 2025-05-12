@@ -147,6 +147,121 @@ export const GetAllUsers = async () => {
   }
 };
 
+export const GetAllCategory = async () => {
+  try {
+    const response = await http.get(`${server}/category/getAll`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Произошла ошибка при выполнении запроса!");
+      return false;
+    }
+  }
+};
+
+export const GetAllDish = async () => {
+  try {
+    const response = await http.get(`${server}/dish/getAll`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Произошла ошибка при выполнении запроса!");
+      return false;
+    }
+  }
+};
+
+export const addCategory = async (data) => {
+  try {
+    const response = await http.post(`${server}/category/create`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+
+export const addDish = async (data) => {
+  try {
+    const response = await http.post(`${server}/dish/create`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+export const updateCategory = async (id, data) => {
+  try {
+    const response = await http.patch(`${server}/category/update/${id}`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+
+export const updateDish = async (id, data) => {
+  try {
+    const response = await http.patch(`${server}/dish/update/${id}`, data, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+
+export const deleteCategory = async (id) => {
+  try {
+    const response = await http.delete(`${server}/category/delete/${id}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+
+export const deleteDish = async (id) => {
+  try {
+    const response = await http.delete(`${server}/dish/delete/${id}`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log("Произошла ошибка при выполнении запроса!");
+  }
+};
+
 export const ChangeRoleUser = async (id, data) => {
   console.log("data", data);
   console.log("data", id);

@@ -1,0 +1,74 @@
+.Table {
+  table {
+    .direction_container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+      justify-content: space-between;
+
+      .rigth_box {
+        margin-left: 10px;
+        img {
+          width: 24px;
+          height: 24px;
+          padding: 5px;
+          transform: scaleY(-1);
+          transition: all 0.2s linear;
+        }
+        .open {
+          transform: scaleY(1);
+          transition: all 0.2s linear;
+        }
+      }
+    }
+
+    // td[name="param"],
+    // th[name="param"] {
+    //   font-size: 22px;
+    //   font-weight: 700;
+    //   position: relative;
+    // }
+
+    .param {
+      display: flex;
+      margin: auto;
+      justify-content: center;
+      align-items: center;
+      // @include ButtonIcon;
+      font-size: 22px;
+      font-weight: 700;
+      // @include HoverActive;
+      transform: translateY(-4px);
+    }
+  }
+}
+
+.DirectionList {
+  position: fixed;
+  background-color: #f0f3f2;
+  max-height: 500px;
+  width: 310px;
+  overflow: auto;
+  overflow-x: hidden;
+  border-radius: 10px;
+  z-index: 2000;
+  border: 1px solid #c8d0ce;
+
+  ul {
+    // @include listNoStyle;
+    width: 100%;
+    li {
+      cursor: pointer;
+      width: 100%;
+      padding: 20px;
+      font-family: Overpass, sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+    }
+    .selected {
+      background-color: #00452940;
+    }
+  }
+}

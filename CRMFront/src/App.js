@@ -5,9 +5,17 @@ import DataContext from "./context";
 import Authorization from "./pages/Auth/Authorization";
 import "./styles/app.css";
 import { GetAllUsers, GetOrders, getAllClients } from "./API/ApiReguest";
-import { tableHeadAppoint, tableHeadClient, tableHeadUsers } from "./components/UniversalTable/HeaderTable";
+import {
+  tableHeadAppoint,
+  tableHeadClient,
+  tableHeadUsers,
+} from "./components/UniversalTable/HeaderTable";
 import { funFixDataTable } from "./function";
 import InfoClient from "./pages/InfoClient/InfoClient";
+import Categories from "./pages/Categories/Categories";
+import Dish from "./pages/Dish/Dish";
+import Analytics from "./pages/Analytics/Analytics";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
   const [unauthorized, setUnauthorized] = useState(true);
@@ -22,7 +30,7 @@ function App() {
   const [textPopUp, setTextPopUp] = useState("");
   // Получение данных для таблицы
   const getTableData = (value) => {
-    console.log("я вызываюсь Value", value)
+    console.log("я вызываюсь Value", value);
     switch (value) {
       case "applications":
         GetOrders().then((res) => {
@@ -41,7 +49,7 @@ function App() {
             setFilteredDataTable(res?.data); // Изначально отфильтрованные данные равны всем данным
             setTableHeader(tableHeadUsers);
           }
-        })
+        });
         break;
       case "Services":
         break;
@@ -54,7 +62,7 @@ function App() {
             setFilteredDataTable(res?.data); // Изначально отфильтрованные данные равны всем данным
             setTableHeader(tableHeadClient);
           }
-        })
+        });
         break;
       default:
         break;
@@ -94,21 +102,27 @@ function App() {
     setSelectedService,
     selectedService,
     textPopUp,
-    setTextPopUp
+    setTextPopUp,
   };
+  const queryClient = new QueryClient();
 
   return (
-    <DataContext.Provider value={context}>
-      <BrowserRouter>
-        <main>
-          <Routes>
-            <Route path="/" element={<Authorization />} />
-            <Route path="/HomePage" element={<HomePage />} />
-            <Route path="/InfoClient" element={<InfoClient />} />
-          </Routes>
-        </main>
-      </BrowserRouter>
-    </DataContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <DataContext.Provider value={context}>
+        <BrowserRouter>
+          <main>
+            <Routes>
+              <Route path="/" element={<Authorization />} />
+              <Route path="/HomePage" element={<HomePage />} />
+              <Route path="/InfoClient" element={<InfoClient />} />
+              <Route path="/Categories" element={<Categories />} />
+              <Route path="/Dish" element={<Dish />} />
+              <Route path="/analytics" element={<Analytics />} />
+            </Routes>
+          </main>
+        </BrowserRouter>
+      </DataContext.Provider>
+    </QueryClientProvider>
   );
 }
 

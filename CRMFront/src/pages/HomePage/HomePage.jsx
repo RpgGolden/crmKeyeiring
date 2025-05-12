@@ -17,7 +17,7 @@ function HomePage() {
 
   // Функция фильтрации данных в зависимости от выбранного фильтра
   const filteredData = context.dataTable?.filter((item) => {
-  switch (filterStatus) {
+    switch (filterStatus) {
       case "all":
         return true; // Показать все записи
       case "active":
@@ -31,62 +31,80 @@ function HomePage() {
       default:
         return true;
     }
-  });   
+  });
 
   return (
     <div className={styles.HomePageContainer}>
       <header>
         <div className={styles.HomePageHeaderPc}>
           <HomePageTopMenu />
-        </div> 
+        </div>
       </header>
       <Layout>
         {context.activeTable === "applications" && (
-          <TableTopAplication filteredData={filteredData} filterStatus={filterStatus} setFilterStatus={setFilterStatus} />
+          <TableTopAplication
+            filteredData={filteredData}
+            filterStatus={filterStatus}
+            setFilterStatus={setFilterStatus}
+          />
         )}
         <main>
           <section className={styles.HomePageTableSectionPc}>
             <div className={styles.HomePageTable}>
-              {
-                context.activeTable === "Services" ? (
-                  <ServiseModule/>
-                ) : context.activeTable === "applications" ?(
-                  <UniversalTable
+              {context.activeTable === "Services" ? (
+                <ServiseModule />
+              ) : context.activeTable === "applications" ? (
+                <UniversalTable
                   tableBody={filteredData} // Передаем отфильтрованные данные
                   tableHeader={context?.tableHeader}
                   clicker={true}
-                />) : context.activeTable === "Clients" ?(
-                  <div className={styles.ClientsTable}>
-                    <UniversalTable
+                />
+              ) : context.activeTable === "Clients" ? (
+                <div className={styles.ClientsTable}>
+                  <UniversalTable
                     tableBody={context?.dataTable}
                     tableHeader={context?.tableHeader}
                     clicker={false}
-                    />
-                  </div>
-                ) : context.activeTable === "Users" ?(
-                  <div className={styles.ClientsTable}>
-                    <UniversalTable
+                  />
+                </div>
+              ) : context.activeTable === "Users" ? (
+                <div className={styles.ClientsTable}>
+                  <UniversalTable
                     tableBody={context?.dataTable}
                     tableHeader={context?.tableHeader}
                     clicker={false}
-                    />
-                  </div>
-                ):
-                (
-                  <div className={styles.developPage}>
-                    <img src="/img/work.png" />
-                  </div>
-                )
-              }
+                  />
+                </div>
+              ) : context.activeTable === "Categories" ? (
+                <div className={styles.ClientsTable}>
+                  <UniversalTable
+                    tableBody={context?.dataTable}
+                    tableHeader={context?.tableHeader}
+                    clicker={false}
+                  />
+                </div>
+              ) : context.activeTable === "Dish" ? (
+                <div className={styles.ClientsTable}>
+                  <UniversalTable
+                    tableBody={context?.dataTable}
+                    tableHeader={context?.tableHeader}
+                    clicker={false}
+                  />
+                </div>
+              ) : (
+                <div className={styles.developPage}>
+                  <img src="/img/work.png" />
+                </div>
+              )}
             </div>
           </section>
         </main>
       </Layout>
       <Footer />
-      {context.vizibleePopUp == "PopUpEditAplication" && <PopUpEditAplication/>}
-      {context.vizibleePopUp == "PopUpError" && <PopUpError/>}
-
-      
+      {context.vizibleePopUp == "PopUpEditAplication" && (
+        <PopUpEditAplication />
+      )}
+      {context.vizibleePopUp == "PopUpError" && <PopUpError />}
     </div>
   );
 }
