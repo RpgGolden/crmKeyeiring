@@ -13,10 +13,10 @@ export default class FeedBack extends Model {
                     primaryKey: true,
                 },
                 clientId: {
-                    type: DataTypes.INTEGER,
+                    type: DataTypes.UUID,
                     allowNull: false,
                     references: {
-                        model: 'clients',
+                        model: 'users',
                         key: 'id',
                     },
                 },

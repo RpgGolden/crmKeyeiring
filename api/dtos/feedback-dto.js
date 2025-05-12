@@ -7,7 +7,7 @@ export default class FeedBackDto {
     score;
     constructor(model) {
         this.id = model.id;
-        this.client = model.Client ? new ClientDto(model.Client) : null;
+        this.client = model.User ? new ClientDto(model.User) : null;
         this.description = model.description;
         this.image = model.image;
         this.score = model.score;
