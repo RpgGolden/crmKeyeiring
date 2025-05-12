@@ -135,7 +135,7 @@ function Profile() {
             <Paper
               sx={{
                 p: 4,
-                maxWidth: 1000,
+                maxWidth: 800,
                 margin: "0 auto",
                 borderRadius: 3,
                 backgroundColor: "#fff",
@@ -188,27 +188,29 @@ function Profile() {
               </Box>
 
               <Grid container spacing={3}>
-                {["surname", "name", "patronymic", "phone"].map((field) => (
-                  <Grid item xs={12} sm={6} key={field}>
-                    <TextField
-                      fullWidth
-                      label={
-                        field === "surname"
-                          ? "Фамилия"
-                          : field === "name"
-                          ? "Имя"
-                          : field === "patronymic"
-                          ? "Отчество"
-                          : "Телефон"
-                      }
-                      name={field}
-                      value={editedUser[field]}
-                      onChange={handleChange}
-                      disabled={!editMode}
-                      variant="outlined"
-                    />
-                  </Grid>
-                ))}
+                {["surname", "name", "patronymic", "phone", "email"].map(
+                  (field) => (
+                    <Grid item xs={12} sm={6} key={field}>
+                      <TextField
+                        fullWidth
+                        label={
+                          field === "surname"
+                            ? "Фамилия"
+                            : field === "name"
+                            ? "Имя"
+                            : field === "patronymic"
+                            ? "Отчество"
+                            : "Телефон"
+                        }
+                        name={field}
+                        value={editedUser[field]}
+                        onChange={handleChange}
+                        disabled={!editMode}
+                        variant="outlined"
+                      />
+                    </Grid>
+                  )
+                )}
               </Grid>
 
               <Box mt={4} display="flex" gap={2}>
