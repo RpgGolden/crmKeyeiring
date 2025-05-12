@@ -64,7 +64,7 @@ window.addEventListener("unload", () => {
 //! Запрос на авторизацию
 export const LoginFunc = async (UserData) => {
   try {
-    console.log("UserData", UserData)
+    console.log("UserData", UserData);
     const response = await http.post(`${server}/auth/login`, UserData);
     const { accessToken, refreshToken, ...user } = response.data;
 
@@ -89,7 +89,7 @@ export const LoginFunc = async (UserData) => {
 //! регистрация аккаунта
 export const Register = async (UserData) => {
   try {
-    const response = await http.post(`${server}/auth/register`, UserData, {
+    const response = await http.post(`${server}/auth/registerAdmin`, UserData, {
       headers: {
         Authorization: `${sessionStorage.getItem("accessToken")}`,
       },
@@ -117,7 +117,7 @@ export const LogOut = async () => {
           Authorization: `${sessionStorage.getItem("accessToken")}`,
         },
         withCredentials: true,
-      },
+      }
     );
     return response;
   } catch (error) {
@@ -147,18 +147,20 @@ export const GetAllUsers = async () => {
   }
 };
 
-
-
 export const ChangeRoleUser = async (id, data) => {
-  console.log("data", data)
-  console.log("data", id)
+  console.log("data", data);
+  console.log("data", id);
 
   try {
-    const response = await http.patch(`${server}/service/changeRole/${id}`, data, {
-      headers: {
-        Authorization: `${sessionStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await http.patch(
+      `${server}/service/changeRole/${id}`,
+      data,
+      {
+        headers: {
+          Authorization: `${sessionStorage.getItem("accessToken")}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
     if (error?.response?.status === 403) {
@@ -169,11 +171,6 @@ export const ChangeRoleUser = async (id, data) => {
     }
   }
 };
-
-
-
-
-
 
 export const GetOrders = async () => {
   try {
@@ -229,8 +226,6 @@ export const UpdateOrders = async (id, data) => {
   }
 };
 
-
-
 export const UpdateStatus = async (data) => {
   try {
     const response = await http.post(`${server}/order/changeStatus`, data, {
@@ -240,12 +235,9 @@ export const UpdateStatus = async (data) => {
     });
     return response;
   } catch (error) {
-      console.log("Произошла ошибка при выполнении запроса!");
+    console.log("Произошла ошибка при выполнении запроса!");
   }
 };
-
-
-
 
 export const GetAllService = async () => {
   try {
@@ -256,7 +248,7 @@ export const GetAllService = async () => {
     });
     return response;
   } catch (error) {
-      console.log("Произошла ошибка при выполнении запроса!");
+    console.log("Произошла ошибка при выполнении запроса!");
   }
 };
 
@@ -269,20 +261,23 @@ export const CreateService = async (data) => {
     });
     return response;
   } catch (error) {
-      console.log("Произошла ошибка при выполнении запроса!");
+    console.log("Произошла ошибка при выполнении запроса!");
   }
 };
 
 export const DeleteService = async (idService) => {
   try {
-    const response = await http.delete(`${server}/service/delete/${idService}`, {
-      headers: {
-        Authorization: `${sessionStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await http.delete(
+      `${server}/service/delete/${idService}`,
+      {
+        headers: {
+          Authorization: `${sessionStorage.getItem("accessToken")}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
-      console.log("Произошла ошибка при выполнении запроса!");
+    console.log("Произошла ошибка при выполнении запроса!");
   }
 };
 
@@ -295,24 +290,28 @@ export const GetOneService = async (idService) => {
     });
     return response;
   } catch (error) {
-      console.log("Произошла ошибка при выполнении запроса!");
+    console.log("Произошла ошибка при выполнении запроса!");
   }
 };
 
-export const UpdateService = async (data, nameService) => { 
-  console.log("nameService", nameService)
-  console.log("data", data)
+export const UpdateService = async (data, nameService) => {
+  console.log("nameService", nameService);
+  console.log("data", data);
   try {
-    const response = await http.patch(`${server}/service/update/${nameService}`, data, {
-      headers: {
-        Authorization: `${sessionStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await http.patch(
+      `${server}/service/update/${nameService}`,
+      data,
+      {
+        headers: {
+          Authorization: `${sessionStorage.getItem("accessToken")}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
-      console.log("Произошла ошибка при выполнении запроса!");
+    console.log("Произошла ошибка при выполнении запроса!");
   }
-}
+};
 
 export const getAllClients = async () => {
   try {
@@ -323,9 +322,9 @@ export const getAllClients = async () => {
     });
     return response;
   } catch (error) {
-      console.log("Произошла ошибка при выполнении запроса!");
+    console.log("Произошла ошибка при выполнении запроса!");
   }
-}
+};
 
 export const getOneClient = async (id) => {
   try {
@@ -336,9 +335,9 @@ export const getOneClient = async (id) => {
     });
     return response;
   } catch (error) {
-      console.log("Произошла ошибка при выполнении запроса!");
+    console.log("Произошла ошибка при выполнении запроса!");
   }
-}
+};
 
 export const getOrdersClient = async (id) => {
   try {
@@ -349,7 +348,6 @@ export const getOrdersClient = async (id) => {
     });
     return response;
   } catch (error) {
-      console.log("Произошла ошибка при выполнении запроса!");
+    console.log("Произошла ошибка при выполнении запроса!");
   }
-}
-
+};
