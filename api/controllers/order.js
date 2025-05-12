@@ -116,6 +116,42 @@ export default {
         }
     },
 
+    async getManyForProfile(req, res) {
+        try {
+            const userId = req.user.id;
+            const user = await User.findByPk(userId);
+
+            if (!user) {
+                return res.status(404).json({ error: 'Пользователь не найден' });
+            }
+
+            const orders = await Order.findAll({
+                where: {
+                    clientId: user.id
+                },
+                include: [User, { model: Dish, include: [Category], through: { attributes: ['quantity'] } }],
+                order: [
+                    ['status', 'DESC'],
+                    ['createdAt', 'DESC'],
+                ],
+            });
+            const ordersDto = orders.map(order => new OrderDto(order, process.env.HOST));
+
+            // Remove timezone from eventStartDate
+            const ordersWithoutTimeZone = ordersDto.map(order => {
+                return {
+                    ...order,
+                    eventStartDate: removeTimeZone(order.eventStartDate),
+                    createdAt: removeTimeZone(order.createdAt),
+                };
+            });
+            return res.json(ordersWithoutTimeZone);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+        }
+    },
+
     async changeStatus(req, res) {
         try {
             const { id, status } = req.body;

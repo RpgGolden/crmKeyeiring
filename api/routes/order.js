@@ -20,6 +20,15 @@ router
         asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK, roles.CLIENT])),
         asyncRoute(orderController.getMany)
     );
+
+router
+    .route('/getManyForProfile')
+    .get(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK, roles.CLIENT])),
+        asyncRoute(orderController.getManyForProfile)
+    );
+
 router
     .route('/changeStatus')
     .post(
@@ -30,7 +39,11 @@ router
 
 router
     .route('/update/:id')
-    .patch(authenticateToken, asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK, roles.CLIENT])), asyncRoute(orderController.updateOrder));
+    .patch(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK, roles.CLIENT])),
+        asyncRoute(orderController.updateOrder)
+    );
 
 router
     .route('/get/:id')
