@@ -3,20 +3,18 @@ import { createSlice } from "@reduxjs/toolkit";
 const BasicSlice = createSlice({
   name: "BasicSlice",
   initialState: {
-    BasicSlice : 1,
+    user: {},
   },
 
   reducers: {
     //! добавить в массив фильтрацию по заголовку
-    setNumber(state, action) {
-      const { number } = action.payload;
-      state.BasicSlice = number;
+    setUser(state, action) {
+      const { data } = action.payload;
+      state.user = data;
     },
-
-   
   },
 });
 
-export const { setNumber } = BasicSlice.actions;
+export const { setUser } = BasicSlice.actions;
 
 export default BasicSlice.reducer;

@@ -1,38 +1,48 @@
 .header {
-    color: rgb(0, 0, 0); /* Цвет текста */
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 15px 20px;
-    background: rgba(255, 255, 255, 0.6); /* Белый цвет с прозрачностью */
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    width: 100%;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1); /* Тень */
-    backdrop-filter: blur(6rem); /* Размытие заднего фона */
-    -webkit-backdrop-filter: blur(6rem); /* Для Safari */
-}
+  color: rgb(0, 0, 0); /* Цвет текста */
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.6); /* Белый цвет с прозрачностью */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1); /* Тень */
+  backdrop-filter: blur(6rem); /* Размытие заднего фона */
+  -webkit-backdrop-filter: blur(6rem); /* Для Safari */
 
-.header h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
-}
-
-.header nav ul {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-}
-
-.header nav ul li {
-    margin-right: 50px;
-}
-
-.header nav ul li a {
+  .reg {
+    position: absolute;
+    right: 100px;
     color: rgb(0, 0, 0);
     text-decoration: none;
     font-size: 1.1rem;
     font-weight: bold;
+    cursor: pointer;
+  }
+}
+
+.header h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.header nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+
+.header nav ul li {
+  margin-right: 50px;
+}
+
+.header nav ul li a {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
