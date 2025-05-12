@@ -16,7 +16,7 @@ export default class FeedBack extends Model {
                     type: DataTypes.INTEGER,
                     allowNull: false,
                     references: {
-                        model: 'clients',
+                        model: 'users',
                         key: 'id',
                     },
                 },
