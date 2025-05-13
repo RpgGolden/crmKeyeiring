@@ -139,8 +139,11 @@ const DishModal = ({
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 1 }}
             onClick={onSaveCart}
+            sx={{
+              mt: 1,
+              backgroundColor: "#f79e4a",
+            }}
           >
             Сохранить корзину
           </Button>
@@ -218,6 +221,12 @@ const DishModal = ({
                           fullWidth
                           variant={isInCart(dish.id) ? "outlined" : "contained"}
                           color={isInCart(dish.id) ? "error" : "primary"}
+                          sx={{
+                            mt: 1,
+                            backgroundColor: isInCart(dish.id)
+                              ? "#fff"
+                              : "#f79e4a",
+                          }}
                           onClick={() =>
                             isInCart(dish.id)
                               ? onRemoveFromCart(dish.id)

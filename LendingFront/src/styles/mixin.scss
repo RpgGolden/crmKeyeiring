@@ -141,7 +141,7 @@ $w3: 480px;
     color: #989898;
   }
   a {
-    color: var(--blue);
+    color: var(--Orange);
   }
 }
 
@@ -188,7 +188,7 @@ $w3: 480px;
 }
 
 @mixin ButtonBlue() {
-  background-color: var(--blue);
+  background-color: var(--Orange);
   border: none;
   border-radius: 12px;
   font-family: Montserrat;
@@ -202,7 +202,7 @@ $w3: 480px;
 }
 
 @mixin ButtonBlueLight() {
-  background-color: var(--bg2);
+  background-color: var(--Orange);
   border: none;
   padding: 10px;
   box-sizing: border-box;

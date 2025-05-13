@@ -169,6 +169,9 @@ function Profile() {
                             right: -6,
                             background: "#fff",
                             border: "1px solid #ccc",
+                            backgroundColor: "#fff",
+                            borderColor: "#f79e4a",
+                            color: "#f79e4a",
                           }}
                         >
                           <PhotoCamera fontSize="small" />
@@ -216,15 +219,35 @@ function Profile() {
               <Box mt={4} display="flex" gap={2}>
                 {editMode ? (
                   <>
-                    <Button variant="contained" onClick={handleSave}>
+                    <Button
+                      variant="contained"
+                      onClick={handleSave}
+                      sx={{
+                        backgroundColor: "#f79e4a",
+                      }}
+                    >
                       Сохранить
                     </Button>
-                    <Button variant="outlined" onClick={handleCancel}>
+                    <Button
+                      variant="outlined"
+                      onClick={handleCancel}
+                      sx={{
+                        backgroundColor: "#fff",
+                        borderColor: "#f79e4a",
+                        color: "#f79e4a",
+                      }}
+                    >
                       Отменить
                     </Button>
                   </>
                 ) : (
-                  <Button variant="contained" onClick={() => setEditMode(true)}>
+                  <Button
+                    variant="contained"
+                    onClick={() => setEditMode(true)}
+                    sx={{
+                      backgroundColor: "#f79e4a",
+                    }}
+                  >
                     Редактировать
                   </Button>
                 )}
@@ -247,7 +270,7 @@ function Profile() {
                       backgroundColor: "#fff",
                       borderRadius: 2,
                       boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
-                      borderLeft: "4px solid #1976d2",
+                      borderLeft: "4px solid #f79e4a",
                     }}
                   >
                     <Typography variant="h6" gutterBottom>

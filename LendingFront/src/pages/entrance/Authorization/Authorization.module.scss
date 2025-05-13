@@ -30,13 +30,13 @@
         .role {
           display: flex;
           flex-direction: row;
-          background-color: var(--bg2);
+          background-color: var(--Orange);
           button {
             width: 50%;
             @include ButtonBlueLight;
           }
           .active {
-            background-color: var(--blue);
+            background-color: var(--Orange);
             color: #fff;
           }
         }
