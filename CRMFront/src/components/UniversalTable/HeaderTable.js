@@ -16,13 +16,10 @@ export const tableHeadAppoint = [
 
 
 export const tableHeadClient = [
-    { key: "number", value: "Номер клиента", isActive: true  },
-    { key: "clientName", value: "Имя клиента", isActive: true  },
-    { key: "clientEmail", value: "Почта клиента", isActive: true  },
-    { key: "clientPhone", value: "Номер телефона клиента", isActive: true  },
-    { key: "count", value: "Колличество заказов", isActive: true  },  
-    { key: "lastOrderDate", value: "Дата последнего заказа", isActive: true  },
-    { key: "info", value: "Информация", isActive: true  },
+    { key: "FIO", value: "ФИО", isActive: true  },
+    { key: "email", value: "Почта", isActive: true  },
+    { key: "phone", value: "Номер телефона", isActive: true  },
+    { key: "createdAt", value: "Дата регистрации", isActive: true  },
 ]
 
 export const tableHeadUsers = [

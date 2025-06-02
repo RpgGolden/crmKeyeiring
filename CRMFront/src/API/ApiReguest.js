@@ -147,6 +147,27 @@ export const GetAllUsers = async () => {
   }
 };
 
+export const getAllEmployee = async () => {
+  try {
+    const response = await http.get(`${server}/client/getAllEmployee`, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    if (error?.response?.status === 403) {
+      window.location.href = `${process.env.REACT_APP_WEB_URL}/Authorization`;
+    } else {
+      console.log("Произошла ошибка при выполнении запроса!");
+      return false;
+    }
+  }
+};
+
+
+
+
 export const GetAllCategory = async () => {
   try {
     const response = await http.get(`${server}/category/getAll`, {

@@ -23,7 +23,14 @@ router
         asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK, roles.CLIENT])),
         asyncRoute(clientController.getAllUsers)
     );
-
+router
+    .route('/getAllEmployee')
+    .get(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.COOK, roles.CLIENT])),
+        asyncRoute(clientController.getAllEmployee)
+    );
+    
 router
     .route('/:id')
     .delete(

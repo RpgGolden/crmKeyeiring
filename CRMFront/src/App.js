@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import DataContext from "./context";
 import Authorization from "./pages/Auth/Authorization";
 import "./styles/app.css";
-import { GetAllUsers, GetOrders, getAllClients } from "./API/ApiReguest";
+import { GetAllUsers, GetOrders, getAllClients, getAllEmployee } from "./API/ApiReguest";
 import {
   tableHeadAppoint,
   tableHeadClient,
@@ -43,7 +43,7 @@ function App() {
         });
         break;
       case "Users":
-        GetAllUsers().then((res) => {
+        getAllEmployee().then((res) => {
           if (res?.status === 200) {
             setDataTable(res?.data);
             setFilteredDataTable(res?.data); // Изначально отфильтрованные данные равны всем данным

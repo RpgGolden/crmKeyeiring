@@ -8,6 +8,7 @@ import path from 'path';
 import FeedBackWZPhoneDto from '../dtos/feedback-withoutphone-dto.js';
 import { AppErrorMissing } from '../utils/errors.js';
 import UserFeedBackDto from '../dtos/client-dto-feedback.js';
+import { Op } from 'sequelize';
 
 export default {
     async getUser(req, res) {
@@ -37,22 +38,77 @@ export default {
 
     async getAllUsers(req, res) {
         try {
-            const users = await User.findAll({ include: [Order] });
+            const users = await User.findAll({
+                where: { role: 3 }, // Фильтрация по роли
+                include: [Order],
+                order: [['createdAt', 'DESC']],
+            });
+    
             const usersDto = users.map(user => {
                 const userDto = new UserDto(user);
-
-                userDto.orders = userDto.orders.map(order => ({
+    
+                const orders = Array.isArray(userDto.orders) ? userDto.orders : [];
+    
+                userDto.orders = orders.map(order => ({
                     ...order,
                     eventStartDate: removeTimeZone(order.eventStartDate),
                     createdAt: removeTimeZone(order.createdAt),
                 }));
+    
                 userDto.count = userDto.orders.length;
-
+    
                 if (userDto.orders.length > 0) {
                     userDto.orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                     userDto.lastOrderDate = userDto.orders[0].createdAt;
                 } else {
                     userDto.lastOrderDate = undefined;
+                }
+    
+                return userDto;
+            });
+    
+            return res.json(usersDto);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    },
+
+
+    async getAllEmployee(req, res) {
+        try {
+            const users = await User.findAll({
+                where: {
+                    role: {
+                        [Op.in]: [1, 2], // Только роли 1 и 2
+                    },
+                },
+                include: [Order],
+                order: [['createdAt', 'DESC']],
+            });
+
+            const usersDto = users.map(user => {
+                const userDto = new UserDto(user);
+
+                // Защита от undefined/null
+                const orders = Array.isArray(userDto.orders) ? userDto.orders : [];
+
+                // Удаляем таймзону у дат
+                userDto.orders = orders.map(order => ({
+                    ...order,
+                    eventStartDate: removeTimeZone(order.eventStartDate),
+                    createdAt: removeTimeZone(order.createdAt),
+                }));
+
+                // Кол-во заказов
+                userDto.count = userDto.orders.length;
+
+                // Последний заказ по дате создания
+                if (userDto.count > 0) {
+                    userDto.orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    userDto.lastOrderDate = userDto.orders[0].createdAt;
+                } else {
+                    userDto.lastOrderDate = null;
                 }
 
                 return userDto;
@@ -60,10 +116,12 @@ export default {
 
             return res.json(usersDto);
         } catch (error) {
-            console.error(error);
+            console.error('Error in getAllEmployee:', error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
+
+    
 
     async deleteUser(req, res) {
         try {

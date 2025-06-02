@@ -5,7 +5,7 @@ function Head() {
   const user = useSelector((state) => state.BasicSlice.user);
   const navigate = useNavigate();
   const funReg = () => {
-    if (user.id) {
+    if (user && user?.id) {
       navigate("/profile");
     } else {
       navigate("/authorization");
@@ -35,7 +35,7 @@ function Head() {
           </ul>
         </nav>
         <span className={styles.reg} onClick={funReg}>
-          {user.id ? user.name + " " + user.surname : "Вход"}
+          {user?.id ? user?.name + " " + user?.surname : "Вход"}
         </span>
       </header>
     </>
